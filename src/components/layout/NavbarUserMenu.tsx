@@ -196,7 +196,7 @@ export default function NavbarUserMenu({ onCreatePlan }: NavbarUserMenuProps) {
                   (e.currentTarget.style.backgroundColor = "transparent")
                 }
               >
-                My Plans
+                🌍 My Travel Plans
               </Link>
 
               {/* Profile link */}
@@ -219,7 +219,7 @@ export default function NavbarUserMenu({ onCreatePlan }: NavbarUserMenuProps) {
                   (e.currentTarget.style.backgroundColor = "transparent")
                 }
               >
-                Profile & Settings
+                ⚙️ Account Settings
               </Link>
 
               {/* Sign out */}
