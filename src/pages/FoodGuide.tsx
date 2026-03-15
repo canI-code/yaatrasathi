@@ -213,7 +213,7 @@ const FoodGuide = () => {
 
                   {/* Per-item save */}
                   <div style={{ borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: 10 }}>
-                    <SaveToPlanButton aiOutput={[food]} sectionType="food" />
+                    <SaveToPlanButton aiOutput={[food]} sectionType="food" append={true} />
                   </div>
                 </Card>
               </motion.div>

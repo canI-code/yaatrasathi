@@ -33,7 +33,7 @@ interface PlansContextValue {
   createPlan: (name: string) => Promise<Plan | null>;
   deletePlan: (id: string) => Promise<void>;
   /** Save (upsert) a section. Snapshots the previous value as a per-section-type version. */
-  saveSection: (planId: string, sectionType: SectionType, data: unknown) => Promise<void>;
+  saveSection: (planId: string, sectionType: SectionType, data: unknown, append?: boolean) => Promise<void>;
   /** Restore a specific version of a specific section type. */
   restoreVersion: (planId: string, versionId: string, sectionType: SectionType) => Promise<void>;
   saveAnalysis: (planId: string, content: string) => Promise<PlanAnalysis | null>;
@@ -140,7 +140,7 @@ export function PlansProvider({ children }: { children: ReactNode }) {
   // ── saveSection ────────────────────────────────────────────────────────
   // Per-section-type versioning: each section type keeps its own ≤4 version history.
   const saveSection = useCallback(
-    async (planId: string, sectionType: SectionType, data: unknown) => {
+    async (planId: string, sectionType: SectionType, data: unknown, append?: boolean) => {
       if (!user) return;
 
       // 1. Fetch the current section of this type (if any) and its versions
@@ -162,6 +162,15 @@ export function PlansProvider({ children }: { children: ReactNode }) {
       const existingSection = sectionRes.data as PlanSection | null;
       const currentVersions = (versionsRes.data ?? []) as PlanVersion[];
 
+      let newData = data;
+      if (append && existingSection && existingSection.data) {
+        if (Array.isArray(existingSection.data) && Array.isArray(data)) {
+          newData = [...existingSection.data, ...data];
+        } else if (typeof existingSection.data === 'object' && typeof data === 'object') {
+          newData = { ...existingSection.data, ...data };
+        }
+      }
+
       // 2. If a previous value exists, snapshot it as a new version for this section type
       if (existingSection) {
         const { data: newVersionData } = await supabase
@@ -174,12 +183,15 @@ export function PlansProvider({ children }: { children: ReactNode }) {
           .select()
           .single();
 
-        // 3. Enforce ≤ 4 versions per section type
+        // 3. Enforce versions per section type based on limits
+        const tier = (localStorage.getItem('ys_plan_tier') ?? 'free') as 'free' | 'basic' | 'pro';
+        const maxVersions = tier === 'pro' ? 10 : (tier === 'basic' ? 6 : 4);
+
         const allVersions = newVersionData
           ? [...currentVersions, newVersionData as PlanVersion]
           : currentVersions;
 
-        const trimmed = trimVersions(allVersions);
+        const trimmed = trimVersions(allVersions, maxVersions);
         const toDelete = allVersions.filter((v) => !trimmed.find((t) => t.id === v.id));
         if (toDelete.length > 0) {
           await supabase
@@ -191,13 +203,13 @@ export function PlansProvider({ children }: { children: ReactNode }) {
         // 4. Update the existing section
         await supabase
           .from('plan_sections')
-          .update({ data, saved_at: new Date().toISOString() })
+          .update({ data: newData, saved_at: new Date().toISOString() })
           .eq('id', existingSection.id);
       } else {
         // 4. Insert new section (no previous value to snapshot)
         await supabase
           .from('plan_sections')
-          .insert({ plan_id: planId, section_type: sectionType, data });
+          .insert({ plan_id: planId, section_type: sectionType, data: newData });
       }
 
       // 5. Touch updated_at on the plan
@@ -212,8 +224,8 @@ export function PlansProvider({ children }: { children: ReactNode }) {
           const currentSections = p.sections ?? [];
           const exists = currentSections.find((s) => s.section_type === sectionType);
           const updatedSections = exists
-            ? currentSections.map((s) => s.section_type === sectionType ? { ...s, saved_at: new Date().toISOString() } : s)
-            : [...currentSections, { id: `temp_${Date.now()}`, plan_id: planId, section_type: sectionType, data, saved_at: new Date().toISOString() }];
+            ? currentSections.map((s) => s.section_type === sectionType ? { ...s, data: newData, saved_at: new Date().toISOString() } : s)
+            : [...currentSections, { id: `temp_${Date.now()}`, plan_id: planId, section_type: sectionType, data: newData, saved_at: new Date().toISOString() }];
           return { ...p, updated_at: new Date().toISOString(), sections: updatedSections };
         })
       );

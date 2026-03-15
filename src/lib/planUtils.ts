@@ -5,9 +5,9 @@ import type { Plan, PlanSection, PlanVersion } from '../types';
  * When length > 4, the oldest version (first element) is removed.
  * Requirements: 3.4
  */
-export function trimVersions(versions: PlanVersion[]): PlanVersion[] {
-  if (versions.length <= 4) return versions;
-  return versions.slice(versions.length - 4);
+export function trimVersions(versions: PlanVersion[], maxCount: number = 4): PlanVersion[] {
+  if (versions.length <= maxCount) return versions;
+  return versions.slice(versions.length - maxCount);
 }
 
 /**

@@ -173,7 +173,7 @@ const TravelOptions = () => {
 
                   {/* Per-option save */}
                   <div style={{ borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: 10, marginTop: 12 }}>
-                    <SaveToPlanButton aiOutput={[opt]} sectionType="transport" />
+                    <SaveToPlanButton aiOutput={[opt]} sectionType="transport" append={true} />
                   </div>
                 </Card>
               </motion.div>

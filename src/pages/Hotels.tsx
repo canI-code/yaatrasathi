@@ -156,7 +156,7 @@ const Hotels = () => {
                 </div>
                 {/* Per-hotel save button */}
                 <div style={{ borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: 10 }}>
-                  <SaveToPlanButton aiOutput={[hotel]} sectionType="hotels" />
+                  <SaveToPlanButton aiOutput={[hotel]} sectionType="hotels" append={true} />
                 </div>
               </Card>
             ))}

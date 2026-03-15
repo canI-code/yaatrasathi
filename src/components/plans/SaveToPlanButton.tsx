@@ -13,9 +13,10 @@ import { colors } from "../../theme";
 interface SaveToPlanButtonProps {
   aiOutput: unknown;
   sectionType: SectionType;
+  append?: boolean;
 }
 
-export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanButtonProps) {
+export default function SaveToPlanButton({ aiOutput, sectionType, append = false }: SaveToPlanButtonProps) {
   const { session } = useAuth();
   const { canUse } = useSubscription();
   const { plans, fetchPlans, saveSection, saveWeatherSnapshot } = usePlans();
@@ -99,7 +100,7 @@ export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanBu
     setError(null);
     setSaving(true);
     try {
-      await saveSection(selectedPlanId, sectionType, aiOutput);
+      await saveSection(selectedPlanId, sectionType, aiOutput, append);
 
       if (sectionType === "planner") {
         const locations = extractTripLocations(aiOutput as TripPlan);
