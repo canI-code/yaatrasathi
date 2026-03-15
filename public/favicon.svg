@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Rounded square background -->
+  <rect width="32" height="32" rx="8" fill="#2A9D8F"/>
+  <!-- Paper plane icon (rotated -30deg, centered) -->
+  <g transform="translate(16,16) rotate(-30) translate(-9,-9)">
+    <path d="M2 2 L18 9 L2 16 L6 9 Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+    <path d="M6 9 L18 9" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
+  </g>
+</svg>
