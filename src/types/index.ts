@@ -132,6 +132,57 @@ export interface SafetyTip {
   emergency?: string;
 }
 
+// Rich safety report (new)
+export type SafetyLevel = "safe" | "moderate" | "high" | "avoid";
+
+export interface SafetyAspect {
+  name: string;
+  level: SafetyLevel;
+  situation: string;
+  tips: string[];
+}
+
+export interface SafetyScam {
+  title: string;
+  howItWorks: string;
+  redFlags: string;
+  howToAvoid: string;
+}
+
+export interface SafetyAreaGuide {
+  area: string;
+  rating: SafetyLevel;
+  bestTime: string;
+  notes: string;
+}
+
+export interface SafetyEmergencyContact {
+  service: string;
+  number: string;
+}
+
+export interface SafetyReport {
+  destination: string;
+  travelerType: string;
+  overallScore: number;          // 1–10
+  overallLevel: SafetyLevel;
+  summary: string;
+  aspects: SafetyAspect[];
+  scams: SafetyScam[];
+  emergencyContacts: SafetyEmergencyContact[];
+  areaGuide: SafetyAreaGuide[];
+  nightSafety: {
+    safeAreas: string[];
+    avoidAreas: string[];
+    transportTips: string[];
+    cautionAfter: string;
+  };
+  travelerSpecificTips: string[];
+  dos: string[];
+  donts: string[];
+  finalVerdict: string;
+}
+
 export interface BestTimeInfo {
   season: string;
   months: string[];
@@ -172,3 +223,59 @@ export type NavLink = {
   label: string;
   path: string;
 };
+
+// --- User Plans Feature Types ---
+
+export type SectionType =
+  | 'planner'
+  | 'budget'
+  | 'hotels'
+  | 'food'
+  | 'transport'
+  | 'safety'
+  | 'best-time'
+  | 'weather';
+
+export interface Plan {
+  id: string;
+  user_id: string;
+  name: string;
+  destination?: string;
+  created_at: string;
+  updated_at: string;
+  sections?: PlanSection[];
+  versions?: PlanVersion[];          // all versions across all section types
+  latestAnalysis?: PlanAnalysis;
+  weatherSnapshot?: WeatherSnapshot;
+}
+
+export interface PlanSection {
+  id: string;
+  plan_id: string;
+  section_type: SectionType;
+  data: unknown;
+  saved_at: string;
+}
+
+export interface PlanVersion {
+  id: string;
+  plan_id: string;
+  section_type: SectionType;   // which section this version belongs to
+  snapshot: unknown;           // the data snapshot for that section
+  created_at: string;
+}
+
+export interface PlanAnalysis {
+  id: string;
+  plan_id: string;
+  content: string;
+  created_at: string;
+}
+
+export interface WeatherSnapshot {
+  id: string;
+  plan_id: string;
+  source_data?: WeatherData;
+  dest_data?: WeatherData;
+  captured_at: string;
+}

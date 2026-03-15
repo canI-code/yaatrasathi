@@ -335,8 +335,22 @@ Return JSON array:
 
 // ─── Food Guide ───────────────────────────────────────────────────────────────
 
-export const generateFoodGuide = async (destination: string): Promise<FoodItem[]> => {
-  const prompt = `List 10 must-try local foods in ${destination}.
+export interface FoodGuideInput {
+  destination: string;
+  budget?: string;        // "budget" | "mid-range" | "fine-dining" | "any"
+  foodType?: string;      // "vegetarian" | "non-vegetarian" | "vegan" | "jain" | "international" | "any"
+}
+
+export const generateFoodGuide = async (input: FoodGuideInput): Promise<FoodItem[]> => {
+  const { destination, budget = "any", foodType = "any" } = input;
+
+  const filters = [
+    budget !== "any" ? `Budget: ${budget}` : null,
+    foodType !== "any" ? `Food type preference: ${foodType}` : null,
+  ].filter(Boolean).join(", ");
+
+  const prompt = `List 12 must-try foods in ${destination}${filters ? ` (${filters})` : ""}.
+Tailor results to the specified preferences. Include a mix of street food, restaurants, and local specialties.
 
 Return JSON array:
 [
@@ -357,15 +371,22 @@ Return JSON array:
 // ─── Transport Options ────────────────────────────────────────────────────────
 
 export const generateTransportOptions = async (from: string, to: string): Promise<TransportOption[]> => {
-  const prompt = `List all transport options to travel from ${from} to ${to}.
+  const prompt = `You are a knowledgeable Indian travel expert. List ONLY the transport options that ACTUALLY EXIST and are PRACTICALLY AVAILABLE for traveling from ${from} to ${to}.
 
-Return JSON array:
+CRITICAL RULES:
+- Only include modes of transport that genuinely operate on this specific route
+- Do NOT invent or hallucinate options (e.g. do not include trains if no train service exists on this route, do not include ferries if no ferry operates here)
+- If the route is within a city or short distance, focus on local options (auto, taxi, bus, rental)
+- Be accurate about costs and durations based on real-world knowledge
+- If you are unsure whether a mode exists, omit it
+
+Return a JSON array of only the options that truly exist:
 [
   {
-    "type": "flight|train|bus|car|ferry",
+    "type": "flight|train|bus|car|ferry|auto|bike",
     "name": "string",
     "description": "string",
-    "cost": "string",
+    "cost": "string (in INR)",
     "duration": "string",
     "pros": ["string"],
     "cons": ["string"]
@@ -413,4 +434,87 @@ Return JSON array:
 
   const raw = await fetchWithRetry(prompt);
   return parseJSON<BestTimeInfo[]>(raw);
+};
+
+// ─── Plan Analysis ────────────────────────────────────────────────────────────
+
+import type { PlanSection } from "../types";
+import { buildAnalysisPrompt, buildChatSystemPrompt } from "./planUtils";
+
+export const generatePlanAnalysis = async (
+  sections: PlanSection[],
+  previousAnalysis?: string
+): Promise<string> => {
+  const client = getClient();
+  const prompt = buildAnalysisPrompt(sections, previousAnalysis);
+
+  const response = await client.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are YatraSathi, an expert AI travel analyst. Respond in clear, well-structured prose. Do not use JSON.",
+      },
+      { role: "user", content: prompt },
+    ],
+    temperature: 0.7,
+    max_tokens: 2048,
+  });
+
+  const content = response.choices[0]?.message?.content;
+  if (!content) throw new Error("Empty response from Groq API.");
+  return content.trim();
+};
+
+// ─── Plan Chat ────────────────────────────────────────────────────────────────
+
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export const sendPlanChatMessage = async (
+  sections: PlanSection[],
+  history: ChatMessage[],
+  userMessage: string
+): Promise<string> => {
+  const client = getClient();
+  const systemPrompt = buildChatSystemPrompt(sections);
+
+  const response = await client.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      { role: "system", content: systemPrompt },
+      ...history,
+      { role: "user", content: userMessage },
+    ],
+    temperature: 0.7,
+    max_tokens: 1024,
+  });
+
+  const content = response.choices[0]?.message?.content;
+  if (!content) throw new Error("Empty response from Groq API.");
+  return content.trim();
+};
+
+// ─── Plan Recommendation ──────────────────────────────────────────────────────
+
+import type { Plan } from "../types";
+import { buildRecommendationPrompt } from "./planUtils";
+
+export interface RankedPlanResult {
+  rank: number;
+  planName: string;
+  rationale: string;
+}
+
+export const generatePlanRecommendation = async (
+  plans: Plan[]
+): Promise<RankedPlanResult[]> => {
+  const prompt = buildRecommendationPrompt(plans);
+  if (!prompt) throw new Error("At least 2 plans are required for a recommendation.");
+
+  const raw = await fetchWithRetry(prompt);
+  return parseJSON<RankedPlanResult[]>(raw);
 };

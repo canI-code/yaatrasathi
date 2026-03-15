@@ -20,6 +20,7 @@ import Button from "../components/ui/Button";
 import { generateTripPlan } from "../lib/groq";
 import { exportTripPlanPDF } from "../lib/pdf";
 import type { TripPlan } from "../types";
+import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -617,9 +618,6 @@ ${window.location.href}`);
                         onChange={(e) => { const v = parseInt(e.target.value || "0", 10); if(v <= 999) setDays(v); }}
                         placeholder="e.g. 5"
                       />
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", marginTop: "4px" }}>
-                      <span>1 day</span><span>30 days</span>
-                    </div>
                   </div>
 
                   {/* Travelers */}
@@ -633,9 +631,6 @@ ${window.location.href}`);
                         onChange={(e) => { const v = parseInt(e.target.value || "0", 10); if(v <= 999) setTravelers(v); }}
                         placeholder="e.g. 2"
                       />
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", marginTop: "4px" }}>
-                      <span>1</span><span>20</span>
-                    </div>
                   </div>
 
                   {/* Budget Level */}
@@ -896,7 +891,7 @@ ${window.location.href}`);
                     <h3 style={{ fontSize: "1rem", fontWeight: 800 }}> Budget Breakdown</h3>
                     <div style={{ textAlign: "right" }}>
                       <p style={{ fontSize: "0.75rem", color: "rgba(27, 42, 59, 0.55)", marginBottom: "2px" }}>Total Estimated Cost</p>
-                      <p style={{ fontSize: "1.4rem", fontWeight: 900, background: "#F0F4F8", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                      <p style={{ fontSize: "1.4rem", fontWeight: 900, color: "#2A9D8F" }}>
                         ₹{plan.totalEstimatedCost?.toLocaleString() ?? "—"}
                       </p>
                     </div>
@@ -920,8 +915,8 @@ ${window.location.href}`);
                             <td style={{ padding: "10px 12px", textAlign: "right", color: "#1B2A3B", fontWeight: 600 }}>₹{row.amount?.toLocaleString()}</td>
                             <td style={{ padding: "10px 12px", textAlign: "right", color: "rgba(27, 42, 59, 0.6)" }}>{row.percentage}%</td>
                             <td style={{ padding: "10px 12px", width: "100px" }}>
-                              <div style={{ height: "6px", borderRadius: "4px", background: "rgba(0, 0, 0, 0.05)", overflow: "hidden" }}>
-                                <div style={{ height: "100%", width: `${row.percentage}%`, background: "#F0F4F8", borderRadius: "4px" }} />
+                              <div style={{ height: "6px", borderRadius: "4px", background: "rgba(0, 0, 0, 0.08)", overflow: "hidden" }}>
+                                <div style={{ height: "100%", width: `${row.percentage}%`, background: "#2A9D8F", borderRadius: "4px" }} />
                               </div>
                             </td>
                           </tr>
@@ -934,7 +929,6 @@ ${window.location.href}`);
 
               {/* Day-by-Day Itinerary */}
               <motion.div
-    className="ai-hover-card"
     initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.15 }}
@@ -1049,6 +1043,7 @@ ${window.location.href}`);
                 >
                    Share
                 </Button>
+                <SaveToPlanButton aiOutput={plan} sectionType="planner" />
               </motion.div>
             </motion.div>
           )}

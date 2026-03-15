@@ -23,6 +23,7 @@ import { generateBudgetEstimate } from "../lib/groq";
 import { exportBudgetPDF } from "../lib/pdf";
 import type { BudgetBreakdown } from "../types";
 import { colors } from "../theme";
+import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -72,11 +73,13 @@ const BREAKDOWN_ROWS = [
 // ─── Glassmorphism Styles ─────────────────────────────────────────────────────
 
 const glassCard: React.CSSProperties = {
-  background: "rgba(255, 255, 255, 0.45)",
-  border: "1px solid rgba(0, 0, 0, 0.05)",
-  borderRadius: "16px",
-  padding: "28px",
-  backdropFilter: "blur(12px)",
+  background: "rgba(255, 255, 255, 0.5)",
+  border: "1px solid rgba(0, 0, 0, 0.08)",
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+  borderRadius: "20px",
+  padding: "24px",
+  backdropFilter: "blur(24px)",
+  WebkitBackdropFilter: "blur(24px)",
   transition: "all 0.2s ease",
 };
 
@@ -546,6 +549,7 @@ const BudgetEstimator = () => {
                   leftIcon={<ArrowPathIcon style={{ width: 18, height: 18 }} />}>
                   Estimate Again
                 </Button>
+                <SaveToPlanButton aiOutput={budget} sectionType="budget" />
               </motion.div>
 
             </motion.div>

@@ -10,6 +10,7 @@ import Loader from "../components/ui/Loader";
 import { generateBestTimeInfo } from "../lib/groq";
 import type { BestTimeInfo } from "../types";
 import { colors } from "../theme";
+import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 
 const SEASON_COLORS: Record<string, string> = {
   summer: "#e77d11",
@@ -73,7 +74,11 @@ const BestTime = () => {
       {loading && <Loader message=" Analyzing seasonal patterns..." />}
 
       {seasons.length > 0 && !loading && (
-        <motion.div
+        <>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+            <SaveToPlanButton aiOutput={seasons} sectionType="best-time" />
+          </div>
+          <motion.div
           initial="hidden"
           animate="visible"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
@@ -109,6 +114,7 @@ const BestTime = () => {
             );
           })}
         </motion.div>
+        </>
       )}
     </PageWrapper>
   );

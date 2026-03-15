@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BuildingOfficeIcon, SparklesIcon, StarIcon } from "@heroicons/react/24/outline";
+import { BuildingOfficeIcon, SparklesIcon, StarIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarSolid } from "@heroicons/react/24/solid";
 import PageWrapper from "../components/layout/PageWrapper";
 import GradientText from "../components/ui/GradientText";
@@ -11,6 +11,7 @@ import Loader from "../components/ui/Loader";
 import { generateHotelRecommendations } from "../lib/groq";
 import type { Hotel } from "../types";
 import { colors } from "../theme";
+import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 
 const STAR_OPTIONS = [
   { label: "Any Stars", value: "any" },
@@ -25,6 +26,7 @@ const Hotels = () => {
   const [loading, setLoading] = useState(false);
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -65,7 +67,8 @@ const Hotels = () => {
                 label="Destination"
                 placeholder="e.g. Jaipur, Rajasthan"
                 value={destination}
-                onChange={(e) => setDestination(e.target.value)} rightIcon={<GetLocationButton onLocation={setDestination} />}
+                onChange={(e) => setDestination(e.target.value)}
+                rightIcon={<GetLocationButton onLocation={setDestination} />}
                 leftIcon={<BuildingOfficeIcon style={{ width: 18, height: 18 }} />}
                 error={error ?? undefined}
               />
@@ -83,30 +86,73 @@ const Hotels = () => {
       {loading && <Loader message=" Finding the best hotels for you..." />}
 
       {hotels.length > 0 && !loading && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
-          {hotels.map((hotel, i) => (
-            <Card key={i}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-                <h3 style={{ fontSize: "1rem", fontWeight: 700, flex: 1, color: colors.textMain }}>{hotel.name}</h3>
-                <div style={{ display: "flex", gap: "2px", marginLeft: "8px" }}>{renderStars(hotel.stars)}</div>
-              </div>
-              <p style={{ fontSize: "0.82rem", color: colors.textMuted, marginBottom: "12px" }}> {hotel.location}</p>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                <span style={{ fontSize: "1.1rem", fontWeight: 700, color: colors.accentStrong }}>₹{hotel.pricePerNight.toLocaleString()}<span style={{ fontSize: "0.75rem", color: colors.textSubtle }}>/night</span></span>
-                <span style={{ fontSize: "0.8rem", backgroundColor: "rgba(22,163,74,0.1)", color: "#059669", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(22,163,74,0.2)" }}>
-                   {hotel.rating}
-                </span>
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                {hotel.amenities.slice(0, 4).map((a) => (
-                  <span key={a} style={{ fontSize: "0.72rem", color: colors.textMuted, backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "3px 9px", borderRadius: "8px", border: "1px solid rgba(0, 0, 0, 0.05)" }}>
-                    {a}
+        <>
+          {/* Top-right: save all hotels with info tooltip */}
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 8, marginBottom: 16 }}>
+            {/* Info icon with tooltip */}
+            <div style={{ position: "relative" }}>
+              <button
+                onMouseEnter={() => setTooltipVisible(true)}
+                onMouseLeave={() => setTooltipVisible(false)}
+                style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", color: colors.textSubtle, padding: 2 }}
+              >
+                <InformationCircleIcon style={{ width: 18, height: 18 }} />
+              </button>
+              {tooltipVisible && (
+                <div style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "calc(100% + 6px)",
+                  width: 220,
+                  background: "rgba(27,42,59,0.92)",
+                  color: "#fff",
+                  fontSize: "0.75rem",
+                  lineHeight: 1.5,
+                  padding: "8px 12px",
+                  borderRadius: 10,
+                  zIndex: 50,
+                  pointerEvents: "none",
+                }}>
+                  Saves all {hotels.length} hotels to your plan. To save a single hotel, use the bookmark button on each card.
+                </div>
+              )}
+            </div>
+            <SaveToPlanButton aiOutput={hotels} sectionType="hotels" />
+          </div>
+
+          {/* Hotel cards grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
+            {hotels.map((hotel, i) => (
+              <Card key={i}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, flex: 1, color: colors.textMain }}>{hotel.name}</h3>
+                  <div style={{ display: "flex", gap: "2px", marginLeft: "8px" }}>{renderStars(hotel.stars)}</div>
+                </div>
+                <p style={{ fontSize: "0.82rem", color: colors.textMuted, marginBottom: "12px" }}>📍 {hotel.location}</p>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                  <span style={{ fontSize: "1.1rem", fontWeight: 700, color: colors.accentStrong }}>
+                    ₹{hotel.pricePerNight.toLocaleString()}
+                    <span style={{ fontSize: "0.75rem", color: colors.textSubtle }}>/night</span>
                   </span>
-                ))}
-              </div>
-            </Card>
-          ))}
-        </div>
+                  <span style={{ fontSize: "0.8rem", backgroundColor: "rgba(22,163,74,0.1)", color: "#059669", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(22,163,74,0.2)" }}>
+                    ⭐ {hotel.rating}
+                  </span>
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "14px" }}>
+                  {hotel.amenities.slice(0, 4).map((a) => (
+                    <span key={a} style={{ fontSize: "0.72rem", color: colors.textMuted, backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "3px 9px", borderRadius: "8px", border: "1px solid rgba(0, 0, 0, 0.05)" }}>
+                      {a}
+                    </span>
+                  ))}
+                </div>
+                {/* Per-hotel save button */}
+                <div style={{ borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: 10 }}>
+                  <SaveToPlanButton aiOutput={[hotel]} sectionType="hotels" />
+                </div>
+              </Card>
+            ))}
+          </div>
+        </>
       )}
     </PageWrapper>
   );

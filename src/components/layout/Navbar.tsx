@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { NavLink } from "../../types";
 import { colors } from "../../theme";
+import NavbarUserMenu from "./NavbarUserMenu";
+import CreatePlanModal from "../plans/CreatePlanModal";
 
 const NAV_LINKS: NavLink[] = [
   { label: "Home", path: "/" },
@@ -20,6 +22,7 @@ const NAV_LINKS: NavLink[] = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path: string) =>
@@ -156,7 +159,7 @@ const Navbar = () => {
               </div>
             </nav>
 
-            {/* Right: primary CTA + mobile menu */}
+            {/* Right: user menu (desktop) + mobile hamburger */}
             <div
               style={{
                 display: "flex",
@@ -164,35 +167,12 @@ const Navbar = () => {
                 gap: "8px",
               }}
             >
-              <Link
-                to="/planner"
-                style={{
-                  textDecoration: "none",
-                  display: "none",
-                }}
-                className="nav-cta-desktop"
-              >
-                <button
-                  style={{
-                    borderRadius: "999px",
-                    border: "none",
-                    padding: "8px 18px",
-                    backgroundColor: colors.accentStrong,
-                    color: "#ffffff",
-                    fontSize: "0.8rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontFamily: "Inter, sans-serif",
-                    boxShadow: "none",
-                    transition: "filter 0.25s ease",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(1.08)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.filter = "brightness(1)")}
-                >
-                  Plan a trip
-                </button>
-              </Link>
+              {/* Desktop: auth-aware user menu */}
+              <div className="nav-user-desktop">
+                <NavbarUserMenu onCreatePlan={() => setCreateModalOpen(true)} />
+              </div>
 
+              {/* Mobile: hamburger toggle */}
               <button
                 onClick={() => setOpen((v) => !v)}
                 style={{
@@ -328,18 +308,26 @@ const Navbar = () => {
           .nav-pill-desktop {
             display: inline-flex !important;
           }
-          .nav-cta-desktop {
-            display: block !important;
+          .nav-user-desktop {
+            display: flex !important;
           }
           .nav-menu-toggle {
             display: none !important;
           }
+        }
+        .nav-user-desktop {
+          display: none;
         }
         .nav-pill-desktop:hover {
           background-color: rgba(42, 157, 143, 0.08) !important;
           color: ${colors.accentStrong} !important;
         }
       `}</style>
+
+      <CreatePlanModal
+        open={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+      />
     </>
   );
 };

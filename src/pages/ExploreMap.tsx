@@ -15,7 +15,7 @@ import {
 import PageWrapper from "../components/layout/PageWrapper";
 import GradientText from "../components/ui/GradientText";
 import Button from "../components/ui/Button";
-import { GetLocationButton } from "../components/ui/Input";
+import Input, { GetLocationButton } from "../components/ui/Input";
 import Loader from "../components/ui/Loader";
 import {
   initMap,
@@ -223,34 +223,29 @@ const ExploreMap = () => {
         >
           {/* Search */}
           <div style={{
-            background: "rgba(0, 0, 0, 0.05)",
-            border: "1px solid rgba(0, 0, 0, 0.05)",
-            borderRadius: "16px",
-            padding: "16px",
-            backdropFilter: "blur(12px)",
+            background: "rgba(255, 255, 255, 0.5)",
+            border: "1px solid rgba(0, 0, 0, 0.08)",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+            borderRadius: "20px",
+            padding: "20px",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
           }}>
-            <div style={{ position: "relative", marginBottom: "10px" }}>
-              <MapPinIcon style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, color: "rgba(27, 42, 59, 0.55)", pointerEvents: "none" }} />
-              <input
+            <div style={{ marginBottom: "12px" }}>
+              <Input
                 placeholder="City name — e.g. Paris, Goa..."
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleExplore()}
                 disabled={exploreLoading}
-                style={{
-                  width: "100%", boxSizing: "border-box",
-                  padding: "10px 40px 10px 36px",
-                  background: "rgba(0, 0, 0, 0.05)",
-                  border: "1px solid rgba(0, 0, 0, 0.05)",
-                  borderRadius: "10px", color: "#1B2A3B",
-                  fontSize: "0.88rem", outline: "none",
-                  transition: "border-color 0.2s",
-                  opacity: exploreLoading ? 0.5 : 1,
-                }}
-                onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = "rgba(42, 157, 143,0.5)"; }}
-                onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = "rgba(0, 0, 0, 0.05)"; }}
+                leftIcon={<MapPinIcon style={{ width: 16, height: 16 }} />}
+                rightIcon={
+                  <div style={{ pointerEvents: 'auto' }}>
+                    <GetLocationButton onLocation={setCity} />
+                  </div>
+                }
+                style={{ opacity: exploreLoading ? 0.5 : 1 }}
               />
-              <div style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", pointerEvents: "auto" }}><GetLocationButton onLocation={setCity} /></div>
             </div>
             <Button
               fullWidth
@@ -304,11 +299,13 @@ const ExploreMap = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               style={{
-                background: "rgba(0, 0, 0, 0.05)",
-                border: "1px solid rgba(0, 0, 0, 0.05)",
-                borderRadius: "14px",
-                padding: "10px",
-                backdropFilter: "blur(12px)",
+                background: "rgba(255, 255, 255, 0.5)",
+                border: "1px solid rgba(0, 0, 0, 0.08)",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                borderRadius: "16px",
+                padding: "16px",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
@@ -361,12 +358,15 @@ const ExploreMap = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               style={{
-                background: "rgba(0, 0, 0, 0.05)",
-                border: "1px solid rgba(0, 0, 0, 0.05)",
-                borderRadius: "14px",
+                background: "rgba(255, 255, 255, 0.5)",
+                border: "1px solid rgba(0, 0, 0, 0.08)",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                borderRadius: "16px",
                 padding: "20px 16px",
                 textAlign: "center",
                 flex: 1,
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
               }}
             >
               <div style={{ fontSize: "2rem", marginBottom: "10px" }}></div>

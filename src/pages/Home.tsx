@@ -66,7 +66,7 @@ const DESTINATIONS = [
   { icon: <BuildingStorefrontIcon style={{ width: 28 }} />, name: "Jaipur", tagline: "The Pink City", query: "Jaipur, Rajasthan", image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=800&auto=format&fit=crop" },
   { icon: <MapPinIcon style={{ width: 28 }} />, name: "Kerala", tagline: "God's Own Country", query: "Kerala, India", image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=800&auto=format&fit=crop" },
   { icon: <HomeModernIcon style={{ width: 28 }} />, name: "Varanasi", tagline: "Spiritual Capital", query: "Varanasi, Uttar Pradesh", image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?q=80&w=800&auto=format&fit=crop" },
-  { icon: <GlobeAsiaAustraliaIcon style={{ width: 28 }} />, name: "Darjeeling", tagline: "Queen Of Hills", query: "Darjeeling, West Bengal", image: "https://images.unsplash.com/photo-1622308644420-ec498ef4dc89?q=80&w=800&auto=format&fit=crop" },
+  { icon: <GlobeAsiaAustraliaIcon style={{ width: 28 }} />, name: "Darjeeling", tagline: "Queen Of Hills", query: "Darjeeling, West Bengal", image: "https://images.unsplash.com/photo-1544634076-a900ceceb61f?q=80&w=800&auto=format&fit=crop" },
 ];
 
 const STATS = [
@@ -206,6 +206,99 @@ const FeatureCard = ({ icon, label, path, desc }: (typeof FEATURES)[0]) => {
   );
 };
 
+// ─── Hero Animation Sub-component ────────────────────────────────────────────────────────
+const HeroAnimation = () => {
+  return (
+    <div style={{ position: "relative", width: "100%", maxWidth: "500px", aspectRatio: "1 / 1", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto" }}>
+      {/* Background blobs (to give it depth) */}
+      <motion.div
+        animate={{ scale: [1, 1.05, 1], rotate: [0, 5, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          width: "85%",
+          height: "85%",
+          background: "linear-gradient(135deg, rgba(42, 157, 143, 0.2), rgba(164, 216, 225, 0.4))",
+          borderRadius: "50%",
+          filter: "blur(40px)",
+          zIndex: 0,
+        }}
+      />
+      
+      {/* Central rotating globe outline */}
+      <motion.div
+        animate={{ rotateZ: 360, rotateX: 20 }}
+        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        style={{
+          width: "75%",
+          height: "75%",
+          position: "relative",
+          zIndex: 1,
+          borderRadius: "50%",
+          border: `2px dashed ${colors.accentStrong}44`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <GlobeAsiaAustraliaIcon style={{ width: "85%", height: "85%", color: colors.accentStrong, strokeWidth: 0.5, opacity: 0.8 }} />
+      </motion.div>
+
+      {/* Floating markers */}
+      <motion.div
+        animate={{ y: [-15, 15, -15] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", top: "15%", left: "5%", zIndex: 2 }}
+      >
+        <div style={{ background: "rgba(255,255,255,0.75)", backdropFilter: "blur(8px)", padding: "10px 14px", borderRadius: "16px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", border: "1px solid rgba(255,255,255,0.5)", display: "flex", alignItems: "center", gap: "10px" }}>
+           <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(42,157,143,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+             <MapPinIcon style={{ width: 18, color: colors.accentStrong }} />
+           </div>
+           <div>
+             <p style={{ fontSize: "0.75rem", fontWeight: 700, margin: 0, color: colors.textMain }}>Paris</p>
+             <p style={{ fontSize: "0.65rem", margin: 0, color: colors.textMuted }}>Day 1</p>
+           </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [10, -10, 10] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        style={{ position: "absolute", bottom: "10%", right: "0%", zIndex: 2 }}
+      >
+        <div style={{ background: "rgba(255,255,255,0.75)", backdropFilter: "blur(8px)", padding: "10px 14px", borderRadius: "16px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", border: "1px solid rgba(255,255,255,0.5)", display: "flex", alignItems: "center", gap: "10px" }}>
+           <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(249,115,22,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+             <MapPinIcon style={{ width: 18, color: "rgba(234,88,12,1)" }} />
+           </div>
+           <div>
+             <p style={{ fontSize: "0.75rem", fontWeight: 700, margin: 0, color: colors.textMain }}>Rome</p>
+             <p style={{ fontSize: "0.65rem", margin: 0, color: colors.textMuted }}>Day 5</p>
+           </div>
+        </div>
+      </motion.div>
+
+      {/* Airplane orbiting */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          borderRadius: "50%",
+          zIndex: 3
+        }}
+      >
+        <div style={{ position: "absolute", top: "-20px", left: "50%", transform: "translateX(-50%) rotate(90deg)" }}>
+          <div style={{ background: colors.accentStrong, width: 44, height: 44, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 8px 24px ${colors.accentStrong}66`, border: "2px solid white" }}>
+             <PaperAirplaneIcon style={{ width: 22, color: "white" }} />
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // ─── Home Page ────────────────────────────────────────────────────────────────
 
 const Home = () => {
@@ -276,86 +369,100 @@ const Home = () => {
           }}
         />
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", flexDirection: "column", gap: "32px", zIndex: 1 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            style={{ display: "flex", alignItems: "center", gap: "12px" }}
-          >
-            <div style={{ width: 40, height: 3, backgroundColor: colors.accentStrong, borderRadius: 4 }} />
-            <span style={{ color: colors.accentStrong, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", fontSize: "0.85rem" }}>
-              Premium AI Travel
-            </span>
-          </motion.div>
+        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "40px", zIndex: 1, flexWrap: "wrap" }}>
+          
+          {/* Left Hero Content */}
+          <div style={{ flex: "1 1 min(100%, 540px)", display: "flex", flexDirection: "column", gap: "32px", zIndex: 2 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              style={{ display: "flex", alignItems: "center", gap: "12px" }}
+            >
+              <div style={{ width: 40, height: 3, backgroundColor: colors.accentStrong, borderRadius: 4 }} />
+              <span style={{ color: colors.accentStrong, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", fontSize: "0.85rem" }}>
+                Premium AI Travel
+              </span>
+            </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            style={{
-              fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
-              fontWeight: 800,
-              lineHeight: 1.08,
-              letterSpacing: "-0.025em",
-              color: colors.textMain,
-              maxWidth: 800,
-            }}
-          >
-            Plan smarter, <br />
-            travel <span style={{ color: colors.accentStrong }}>better.</span>
-          </motion.h1>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              style={{
+                fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
+                fontWeight: 800,
+                lineHeight: 1.08,
+                letterSpacing: "-0.025em",
+                color: colors.textMain,
+                maxWidth: 800,
+              }}
+            >
+              Plan smarter, <br />
+              travel <span style={{ color: colors.accentStrong }}>better.</span>
+            </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            style={{
-              fontSize: "clamp(1.05rem, 2vw, 1.2rem)",
-              color: colors.textMuted,
-              maxWidth: 600,
-              lineHeight: 1.7,
-            }}
-          >
-            YatraSathi uses advanced AI to instantly generate personalized itineraries, calculate budgets, and find the best local experiences—all in a beautifully simple interface.
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              style={{
+                fontSize: "clamp(1.05rem, 2vw, 1.2rem)",
+                color: colors.textMuted,
+                maxWidth: 600,
+                lineHeight: 1.7,
+              }}
+            >
+              YatraSathi uses advanced AI to instantly generate personalized itineraries, calculate budgets, and find the best local experiences—all in a beautifully simple interface.
+            </motion.p>
 
-          <motion.div
-             initial={{ opacity: 0, y: 30 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.7, delay: 0.3 }}
-             style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginTop: "8px" }}
-          >
-             <Link to="/planner" style={{ textDecoration: "none" }}>
-               <Button size="lg" style={{ padding: "16px 40px", fontSize: "1rem", borderRadius: "14px" }}>
-                 Start Planning
+            <motion.div
+               initial={{ opacity: 0, y: 30 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.7, delay: 0.3 }}
+               style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginTop: "8px" }}
+            >
+               <Link to="/planner" style={{ textDecoration: "none" }}>
+                 <Button size="lg" style={{ padding: "16px 40px", fontSize: "1rem", borderRadius: "14px" }}>
+                   Start Planning
+                 </Button>
+               </Link>
+               <Button size="lg" variant="ghost" onClick={scrollToFeatures} style={{ padding: "16px 40px", fontSize: "1rem", borderRadius: "14px" }}>
+                 Explore Features
                </Button>
-             </Link>
-             <Button size="lg" variant="ghost" onClick={scrollToFeatures} style={{ padding: "16px 40px", fontSize: "1rem", borderRadius: "14px" }}>
-               Explore Features
-             </Button>
-          </motion.div>
+            </motion.div>
 
-          <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             transition={{ duration: 1, delay: 0.6 }}
-             style={{ display: "flex", alignItems: "center", gap: "28px", marginTop: "44px", paddingTop: "32px", borderTop: "1px solid rgba(0,0,0,0.06)", maxWidth: 600 }}
+            <motion.div
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               transition={{ duration: 1, delay: 0.6 }}
+               style={{ display: "flex", alignItems: "center", gap: "28px", marginTop: "44px", paddingTop: "32px", borderTop: "1px solid rgba(0,0,0,0.06)", maxWidth: 600 }}
+            >
+               <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: colors.textMain }}>10k+</span>
+                  <span style={{ fontSize: "0.82rem", color: colors.textMuted, fontWeight: 500 }}>Trips Planned</span>
+               </div>
+               <div style={{ width: 1, height: 40, backgroundColor: "rgba(0,0,0,0.08)" }} />
+               <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: colors.textMain }}>500+</span>
+                  <span style={{ fontSize: "0.82rem", color: colors.textMuted, fontWeight: 500 }}>Destinations</span>
+               </div>
+               <div style={{ width: 1, height: 40, backgroundColor: "rgba(0,0,0,0.08)" }} />
+               <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: colors.textMain }}>4.9/5</span>
+                  <span style={{ fontSize: "0.82rem", color: colors.textMuted, fontWeight: 500 }}>User Rating</span>
+               </div>
+            </motion.div>
+          </div>
+
+          {/* Right Animation Content */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            style={{ flex: "1 1 min(100%, 480px)", display: "flex", justifyContent: "center", zIndex: 1 }}
           >
-             <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "1.8rem", fontWeight: 800, color: colors.textMain }}>10k+</span>
-                <span style={{ fontSize: "0.82rem", color: colors.textMuted, fontWeight: 500 }}>Trips Planned</span>
-             </div>
-             <div style={{ width: 1, height: 40, backgroundColor: "rgba(0,0,0,0.08)" }} />
-             <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "1.8rem", fontWeight: 800, color: colors.textMain }}>500+</span>
-                <span style={{ fontSize: "0.82rem", color: colors.textMuted, fontWeight: 500 }}>Destinations</span>
-             </div>
-             <div style={{ width: 1, height: 40, backgroundColor: "rgba(0,0,0,0.08)" }} />
-             <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "1.8rem", fontWeight: 800, color: colors.textMain }}>4.9/5</span>
-                <span style={{ fontSize: "0.82rem", color: colors.textMuted, fontWeight: 500 }}>User Rating</span>
-             </div>
+            <HeroAnimation />
           </motion.div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ReactNode, useState } from "react";
+import { InputHTMLAttributes, ReactNode, useState, forwardRef } from "react";
 import { colors } from "../../theme";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rightIcon?: ReactNode;
 }
 
-const Input = ({ label, error, hint, leftIcon, rightIcon, style, ...rest }: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, hint, leftIcon, rightIcon, style, ...rest }, ref) => {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -51,6 +51,7 @@ const Input = ({ label, error, hint, leftIcon, rightIcon, style, ...rest }: Inpu
         )}
 
         <input
+          ref={ref}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{
@@ -102,7 +103,7 @@ const Input = ({ label, error, hint, leftIcon, rightIcon, style, ...rest }: Inpu
       )}
     </div>
   );
-};
+});
 
 
 export const GetLocationButton = ({ onLocation }: { onLocation: (loc: string) => void }) => {

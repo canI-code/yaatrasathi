@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
 import App from "./App";
+import { AuthProvider } from "./contexts/AuthContext";
+import { PlansProvider } from "./contexts/PlansContext";
 
 const system = createSystem(defaultConfig, {
   theme: {
@@ -57,7 +59,11 @@ if (!rootEl) {
 createRoot(rootEl).render(
   <StrictMode>
     <ChakraProvider value={system}>
-      <App />
+      <AuthProvider>
+        <PlansProvider>
+          <App />
+        </PlansProvider>
+      </AuthProvider>
     </ChakraProvider>
   </StrictMode>
 );

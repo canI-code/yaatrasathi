@@ -10,6 +10,7 @@ import Loader from "../components/ui/Loader";
 import { generateSafetyGuide } from "../lib/groq";
 import type { SafetyTip } from "../types";
 import { colors } from "../theme";
+import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 
 const SafetyGuide = () => {
   const [destination, setDestination] = useState("");
@@ -71,7 +72,11 @@ const SafetyGuide = () => {
       {loading && <Loader message=" Analyzing safety information..." />}
 
       {tips.length > 0 && !loading && (
-        <motion.div
+        <>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+            <SaveToPlanButton aiOutput={tips} sectionType="safety" />
+          </div>
+          <motion.div
           initial="hidden"
           animate="visible"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
@@ -102,6 +107,7 @@ const SafetyGuide = () => {
             </motion.div>
           ))}
         </motion.div>
+        </>
       )}
     </PageWrapper>
   );

@@ -11,10 +11,11 @@ import PageWrapper from "../components/layout/PageWrapper";
 import GradientText from "../components/ui/GradientText";
 import Button from "../components/ui/Button";
 import Loader from "../components/ui/Loader";
-import { GetLocationButton } from "../components/ui/Input";
+import Input, { GetLocationButton } from "../components/ui/Input";
 import { fetchWeather, fetchForecast } from "../lib/weather";
 import { generateWeatherAnalysis } from "../lib/groq";
 import type { WeatherData, WeatherForecast, WeatherAnalysis } from "../types";
+import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 
 // ─── Weather condition → solid accent / glow ───────────────────────────────
 
@@ -313,30 +314,31 @@ const Weather = () => {
 
         {/* ── Search Bar ──────────────────────────────────────────────────── */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          style={{ display: "flex", gap: "10px", marginBottom: "40px", maxWidth: "560px", margin: "0 auto 40px" }}>
-          <div style={{ flex: 1, position: "relative" }}>
-            <MapPinIcon style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 18, height: 18, color: "rgba(27, 42, 59, 0.45)", pointerEvents: "none" }} />
-            <input
+          style={{ 
+            display: "flex", gap: "10px", marginBottom: "40px", maxWidth: "560px", margin: "0 auto 40px",
+            background: "rgba(255, 255, 255, 0.5)",
+            border: "1px solid rgba(0, 0, 0, 0.08)",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+            borderRadius: "20px",
+            padding: "20px",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+          }}>
+          <div style={{ flex: 1 }}>
+            <Input
               ref={inputRef}
               placeholder="Enter city name — e.g. Mumbai, Paris, Tokyo"
               value={city}
               onChange={(e) => { setCity(e.target.value); setError(null); }}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              style={{
-                width: "100%", boxSizing: "border-box",
-                padding: "12px 14px 12px 40px",
-                background: error ? "rgba(42, 157, 143,0.08)" : "rgba(0, 0, 0, 0.05)",
-                border: `1px solid ${error ? "rgba(42, 157, 143,0.5)" : "rgba(0, 0, 0, 0.05)"}`,
-                borderRadius: "14px", color: "#1B2A3B", fontSize: "0.95rem", outline: "none",
-                transition: "border-color 0.2s",
-                paddingRight: "40px"
-              }}
-              onFocus={(e) => { if (!error) (e.target as HTMLInputElement).style.borderColor = "rgba(42, 157, 143,0.5)"; }}
-              onBlur={(e) => { if (!error) (e.target as HTMLInputElement).style.borderColor = "rgba(0, 0, 0, 0.05)"; }}
+              leftIcon={<MapPinIcon style={{ width: 18, height: 18 }} />}
+              rightIcon={
+                <div style={{ pointerEvents: 'auto' }}>
+                  <GetLocationButton onLocation={setCity} />
+                </div>
+              }
+              error={error ? " " : undefined} // Trigger error border
             />
-            <div style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)" }}>
-              <GetLocationButton onLocation={setCity} />
-            </div>
           </div>
           <Button onClick={handleSearch} loading={loading}
             leftIcon={<MagnifyingGlassIcon style={{ width: 18, height: 18 }} />}>
@@ -603,6 +605,13 @@ const Weather = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Save weather data to plan */}
+        {weather && !loading && (
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+            <SaveToPlanButton aiOutput={weather} sectionType="weather" />
+          </div>
+        )}
 
       </div>
     </PageWrapper>
