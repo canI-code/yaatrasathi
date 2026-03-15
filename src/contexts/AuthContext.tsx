@@ -50,7 +50,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const validationError = validatePassword(password);
     if (validationError) return { error: validationError };
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    // Use the current origin so it works on both localhost and production
+    const redirectTo = `${window.location.origin}/dashboard`;
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: redirectTo },
+    });
     return { error };
   }
 

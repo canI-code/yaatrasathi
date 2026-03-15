@@ -8,6 +8,7 @@ import {
 import { sendGeneralChatMessage } from "../../lib/groq";
 import type { ChatMessage } from "../../lib/groq";
 import { useSubscription } from "../../contexts/SubscriptionContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { colors } from "../../theme";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -20,19 +21,21 @@ interface ChatSession {
   updatedAt: number;
 }
 
-const STORAGE_KEY = "yatrasathi_general_chats";
+// ── Per-user storage key ──────────────────────────────────────────────────────
 
-// ── Persistence ───────────────────────────────────────────────────────────────
+function storageKey(userId: string) {
+  return `yatrasathi_chats_${userId}`;
+}
 
-function loadSessions(): ChatSession[] {
+function loadSessions(userId: string): ChatSession[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(storageKey(userId));
     return raw ? (JSON.parse(raw) as ChatSession[]) : [];
   } catch { return []; }
 }
 
-function saveSessions(sessions: ChatSession[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+function saveSessions(userId: string, sessions: ChatSession[]) {
+  localStorage.setItem(storageKey(userId), JSON.stringify(sessions));
 }
 
 function newSession(): ChatSession {
@@ -148,11 +151,14 @@ function renderMessageContent(content: string) {
 
 export default function GeneralChat() {
   const { canUse, hasChatQuota, incrementChatUsage } = useSubscription();
+  const { user } = useAuth();
+  const userId = user?.id ?? "anonymous";
+
   const [open, setOpen] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
-  const [sessions, setSessions] = useState<ChatSession[]>(() => loadSessions());
+  const [sessions, setSessions] = useState<ChatSession[]>(() => loadSessions(userId));
   const [activeId, setActiveId] = useState<string>(() => {
-    const s = loadSessions();
+    const s = loadSessions(userId);
     return s.length > 0 ? s[0].id : newSession().id;
   });
   const [input, setInput] = useState("");
@@ -160,6 +166,20 @@ export default function GeneralChat() {
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Reload sessions when user changes (login/logout)
+  useEffect(() => {
+    const userSessions = loadSessions(userId);
+    if (userSessions.length === 0) {
+      const s = newSession();
+      setSessions([s]);
+      setActiveId(s.id);
+    } else {
+      setSessions(userSessions);
+      setActiveId(userSessions[0].id);
+    }
+    setOpen(false); // close panel on user switch
+  }, [userId]);
 
   // Ensure there's always at least one session
   useEffect(() => {
@@ -170,8 +190,8 @@ export default function GeneralChat() {
     }
   }, [sessions.length]);
 
-  // Persist on change
-  useEffect(() => { saveSessions(sessions); }, [sessions]);
+  // Persist on change — scoped to current user
+  useEffect(() => { saveSessions(userId, sessions); }, [userId, sessions]);
 
   // Auto-scroll
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [sessions, loading]);
