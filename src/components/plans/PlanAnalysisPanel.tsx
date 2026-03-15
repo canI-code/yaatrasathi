@@ -279,8 +279,8 @@ export default function PlanAnalysisPanel({ planId, sections, latestAnalysis, on
       const content = await generatePlanAnalysis(sections, currentAnalysis?.content);
       const saved = await saveAnalysis(planId, content);
       if (saved) { setCurrentAnalysis(saved); onAnalysisSaved(saved); }
-    } catch {
-      setError("Analysis failed. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Analysis failed. Please try again.");
     } finally {
       setLoading(false);
     }
