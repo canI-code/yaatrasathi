@@ -27,13 +27,15 @@ async function callGroqRecommendation(prompt: string): Promise<RankedPlan[]> {
       },
       { role: "user", content: prompt },
     ],
+    response_format: { type: "json_object" },
     temperature: 0.7,
     max_tokens: 2048,
   });
 
   const raw = response.choices[0]?.message?.content ?? "";
   const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  return JSON.parse(cleaned) as RankedPlan[];
+  const parsed = JSON.parse(cleaned);
+  return parsed.rankedPlans || parsed;
 }
 
 const RANK_MEDALS = ["🥇", "🥈", "🥉"];
@@ -75,8 +77,9 @@ export default function PlanRecommendationPanel() {
       }
       const ranked = await callGroqRecommendation(prompt);
       setResult(ranked);
-    } catch {
-      setError("Failed to get recommendation. Please try again.");
+    } catch (err: any) {
+      console.error("AI Recommendation error:", err);
+      setError("Failed to get recommendation: " + (err.message || "Please try again."));
     } finally {
       setLoading(false);
     }

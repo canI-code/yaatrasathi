@@ -127,14 +127,16 @@ ${planSummaries}
 
 Rank these plans from most to least recommended and provide clear reasoning for each ranking. Consider factors like completeness of planning, destination appeal, budget, and any available analysis.
 
-Return a JSON array with this structure:
-[
-  {
-    "rank": 1,
-    "planName": "string",
-    "rationale": "2-3 sentence explanation of why this plan is ranked here"
-  }
-]`;
+Return a JSON object with this exact structure containing a "rankedPlans" array:
+{
+  "rankedPlans": [
+    {
+      "rank": 1,
+      "planName": "string",
+      "rationale": "2-3 sentence explanation of why this plan is ranked here"
+    }
+  ]
+}`;
 }
 
 /**
