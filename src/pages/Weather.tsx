@@ -110,8 +110,8 @@ const StatPill = ({ icon, label, value, accent }: { icon: string; label: string;
     }}
   >
     <div style={{ fontSize: "1.4rem", marginBottom: "4px" }}>{icon}</div>
-    <div style={{ fontSize: "1rem", fontWeight: 700, color: "#3D3C3A", marginBottom: "2px" }}>{value}</div>
-    <div style={{ fontSize: "0.68rem", color: "rgba(0, 0, 0, 0.1)", textTransform: "uppercase", letterSpacing: "0.04em" }}>{label}</div>
+    <div style={{ fontSize: "1rem", fontWeight: 700, color: "#1B2A3B", marginBottom: "2px" }}>{value}</div>
+    <div style={{ fontSize: "0.68rem", color: "rgba(27, 42, 59, 0.65)", textTransform: "uppercase", letterSpacing: "0.04em" }}>{label}</div>
   </motion.div>
 );
 
@@ -141,7 +141,7 @@ const ForecastCard = ({
       transition: "background 0.2s",
     }}
   >
-    <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(0, 0, 0, 0.1)", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+    <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(27, 42, 59, 0.65)", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
       {fmtDay(fc.date)}
     </p>
     <img
@@ -149,12 +149,12 @@ const ForecastCard = ({
       alt={fc.description}
       style={{ width: 52, height: 52, objectFit: "contain" }}
     />
-    <p style={{ fontSize: "0.7rem", color: "rgba(0, 0, 0, 0.1)", textTransform: "capitalize", margin: "4px 0 10px", lineHeight: 1.3 }}>
+    <p style={{ fontSize: "0.7rem", color: "rgba(27, 42, 59, 0.65)", textTransform: "capitalize", margin: "4px 0 10px", lineHeight: 1.3 }}>
       {fc.description}
     </p>
     <div style={{ display: "flex", justifyContent: "center", gap: "6px" }}>
       <span style={{ fontSize: "0.85rem", fontWeight: 700, color: accent }}>{fc.tempMax}°</span>
-      <span style={{ fontSize: "0.85rem", color: "rgba(0, 0, 0, 0.1)" }}>{fc.tempMin}°</span>
+      <span style={{ fontSize: "0.85rem", color: "rgba(27, 42, 59, 0.65)" }}>{fc.tempMin}°</span>
     </div>
     {/* temp range bar */}
     <div style={{ marginTop: "8px", height: "3px", borderRadius: "2px", background: "rgba(0, 0, 0, 0.05)", position: "relative" }}>
@@ -225,7 +225,7 @@ const AICard = ({
       backdropFilter: "blur(12px)",
     }}
   >
-    <h3 style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px", color: "rgba(61, 60, 58,0.9)" }}>
+    <h3 style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px", color: "#1B2A3B" }}>
       <span style={{ fontSize: "1.2rem" }}>{icon}</span> {title}
     </h3>
     {children}
@@ -306,7 +306,7 @@ const Weather = () => {
           <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "10px" }}>
             <GradientText> Live Weather</GradientText>
           </h1>
-          <p style={{ color: "rgba(61, 60, 58,0.5)", fontSize: "0.95rem" }}>
+          <p style={{ color: "rgba(27, 42, 59, 0.65)", fontSize: "0.95rem" }}>
             Real-time weather + AI travel analysis powered by OpenWeatherMap & Groq
           </p>
         </motion.div>
@@ -315,7 +315,7 @@ const Weather = () => {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           style={{ display: "flex", gap: "10px", marginBottom: "40px", maxWidth: "560px", margin: "0 auto 40px" }}>
           <div style={{ flex: 1, position: "relative" }}>
-            <MapPinIcon style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 18, height: 18, color: "rgba(61, 60, 58,0.4)", pointerEvents: "none" }} />
+            <MapPinIcon style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 18, height: 18, color: "rgba(27, 42, 59, 0.45)", pointerEvents: "none" }} />
             <input
               ref={inputRef}
               placeholder="Enter city name — e.g. Mumbai, Paris, Tokyo"
@@ -327,7 +327,7 @@ const Weather = () => {
                 padding: "12px 14px 12px 40px",
                 background: error ? "rgba(42, 157, 143,0.08)" : "rgba(0, 0, 0, 0.05)",
                 border: `1px solid ${error ? "rgba(42, 157, 143,0.5)" : "rgba(0, 0, 0, 0.05)"}`,
-                borderRadius: "14px", color: "#3D3C3A", fontSize: "0.95rem", outline: "none",
+                borderRadius: "14px", color: "#1B2A3B", fontSize: "0.95rem", outline: "none",
                 transition: "border-color 0.2s",
                 paddingRight: "40px"
               }}
@@ -368,7 +368,7 @@ const Weather = () => {
                   transition={{ duration: 0.6, ease: "easeOut" }}
                   style={{
                     borderRadius: "28px",
-                    background: "#F0F4F8",
+                    background: "rgba(255, 255, 255, 0.55)",
                     padding: "0",
                     marginBottom: "16px",
                     overflow: "hidden",
@@ -380,7 +380,7 @@ const Weather = () => {
                 <div style={{
                   position: "absolute", top: "-60px", right: "-60px",
                   width: "280px", height: "280px", borderRadius: "50%",
-                  background: "#F0F4F8",
+                  background: "rgba(164, 216, 225, 0.15)",
                   filter: "blur(30px)", pointerEvents: "none",
                 }} />
 
@@ -389,19 +389,19 @@ const Weather = () => {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
-                        <MapPinIcon style={{ width: 16, height: 16, color: "rgba(0, 0, 0, 0.1)" }} />
-                        <span style={{ fontSize: "0.8rem", color: "rgba(0, 0, 0, 0.1)", fontWeight: 600, letterSpacing: "0.05em" }}>
+                        <MapPinIcon style={{ width: 16, height: 16, color: "rgba(27, 42, 59, 0.65)" }} />
+                        <span style={{ fontSize: "0.8rem", color: "rgba(27, 42, 59, 0.65)", fontWeight: 600, letterSpacing: "0.05em" }}>
                           {weather.country}
                         </span>
                       </div>
-                      <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "#3D3C3A", lineHeight: 1.1 }}>
+                      <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "#1B2A3B", lineHeight: 1.1 }}>
                         {weather.city}
                       </h2>
                     </div>
                     <div style={{
                       background: "rgba(0, 0, 0, 0.05)", borderRadius: "14px",
                       padding: "8px 16px", backdropFilter: "blur(10px)",
-                      fontSize: "0.78rem", color: "#3D3C3A", fontWeight: 600,
+                      fontSize: "0.78rem", color: "#1B2A3B", fontWeight: 600,
                       border: "1px solid rgba(0, 0, 0, 0.05)",
                     }}>
                       Live · {new Date().toLocaleDateString("en-IN", { weekday: "short", month: "short", day: "numeric" })}
@@ -423,11 +423,11 @@ const Weather = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 }}
-                        style={{ fontSize: "clamp(4rem, 10vw, 6rem)", fontWeight: 900, color: "#3D3C3A", lineHeight: 1, letterSpacing: "-2px" }}
+                        style={{ fontSize: "clamp(4rem, 10vw, 6rem)", fontWeight: 900, color: "#1B2A3B", lineHeight: 1, letterSpacing: "-2px" }}
                       >
                         {Math.round(weather.temperature)}°
                       </motion.div>
-                      <p style={{ fontSize: "1rem", color: "rgba(0, 0, 0, 0.1)", textTransform: "capitalize", marginTop: "4px" }}>
+                      <p style={{ fontSize: "1rem", color: "rgba(27, 42, 59, 0.65)", textTransform: "capitalize", marginTop: "4px" }}>
                         {weather.description}
                       </p>
                     </div>
@@ -437,12 +437,12 @@ const Weather = () => {
                   <div style={{
                     display: "inline-flex", alignItems: "center", gap: "8px",
                     background: "rgba(0, 0, 0, 0.05)", borderRadius: "20px",
-                    padding: "6px 16px", fontSize: "0.85rem", color: "rgba(0, 0, 0, 0.1)",
+                    padding: "6px 16px", fontSize: "0.85rem", color: "rgba(27, 42, 59, 0.65)",
                     border: "1px solid rgba(0, 0, 0, 0.05)",
                   }}>
                     <span>Feels like</span>
                     <strong>{Math.round(weather.feelsLike)}°C</strong>
-                    <span style={{ color: "rgba(0, 0, 0, 0.1)" }}>·</span>
+                    <span style={{ color: "rgba(27, 42, 59, 0.65)" }}>·</span>
                     <span>{weather.humidity}% humidity</span>
                   </div>
                 </div>
@@ -461,8 +461,8 @@ const Weather = () => {
                       padding: "0 12px",
                     }}>
                       <div style={{ fontSize: "1.2rem", marginBottom: "4px" }}>{s.icon}</div>
-                      <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#3D3C3A" }}>{s.value}</div>
-                      <div style={{ fontSize: "0.65rem", color: "rgba(0, 0, 0, 0.1)", textTransform: "uppercase", letterSpacing: "0.04em" }}>{s.label}</div>
+                      <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#1B2A3B" }}>{s.value}</div>
+                      <div style={{ fontSize: "0.65rem", color: "rgba(27, 42, 59, 0.65)", textTransform: "uppercase", letterSpacing: "0.04em" }}>{s.label}</div>
                     </div>
                   ))}
                 </div>
@@ -472,7 +472,7 @@ const Weather = () => {
               {forecast.length > 0 && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
                   style={{ marginBottom: "20px" }}>
-                  <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(61, 60, 58,0.55)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: "12px", paddingLeft: "4px" }}>
+                  <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(27, 42, 59, 0.58)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: "12px", paddingLeft: "4px" }}>
                     5-Day Forecast
                   </h3>
                   <div style={{ display: "flex", gap: "10px", overflowX: "auto", paddingBottom: "6px", scrollbarWidth: "none" }}>
@@ -496,7 +496,7 @@ const Weather = () => {
                   }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "10px" }}></div>
                   <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>AI Weather Analysis</h3>
-                  <p style={{ color: "rgba(61, 60, 58,0.5)", fontSize: "0.9rem", marginBottom: "20px", maxWidth: "420px", margin: "0 auto 20px" }}>
+                  <p style={{ color: "rgba(27, 42, 59, 0.65)", fontSize: "0.9rem", marginBottom: "20px", maxWidth: "420px", margin: "0 auto 20px" }}>
                     Get Groq AI insights on how this weather affects travel, what to wear, and what to do in {weather.city}.
                   </p>
                   {analysisError && (
@@ -523,12 +523,12 @@ const Weather = () => {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                   {/* Header */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                    <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(61, 60, 58,0.55)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+                    <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(27, 42, 59, 0.58)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
                        AI Weather Analysis · {weather.city}
                     </h3>
                     <button
                       onClick={() => { setAnalysis(null); setAnalysisError(null); }}
-                      style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(61, 60, 58,0.4)", fontSize: "0.8rem", display: "flex", alignItems: "center", gap: "4px" }}
+                      style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(27, 42, 59, 0.45)", fontSize: "0.8rem", display: "flex", alignItems: "center", gap: "4px" }}
                     >
                       <ArrowPathIcon style={{ width: 14, height: 14 }} /> Regenerate
                     </button>
@@ -538,10 +538,10 @@ const Weather = () => {
                     {/* Overview + Travel Impact - 2 col */}
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "14px" }}>
                       <AICard icon="" title="Weather Overview" delay={0}>
-                        <p style={{ fontSize: "0.9rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.7 }}>{analysis.overview}</p>
+                        <p style={{ fontSize: "0.9rem", color: "rgba(27, 42, 59, 0.72)", lineHeight: 1.7 }}>{analysis.overview}</p>
                       </AICard>
                       <AICard icon="" title="Travel Impact" delay={0.07}>
-                        <p style={{ fontSize: "0.9rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.7 }}>{analysis.travelImpact}</p>
+                        <p style={{ fontSize: "0.9rem", color: "rgba(27, 42, 59, 0.72)", lineHeight: 1.7 }}>{analysis.travelImpact}</p>
                       </AICard>
                     </div>
 
@@ -565,7 +565,7 @@ const Weather = () => {
                             style={{
                               background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)",
                               borderRadius: "12px", padding: "12px 14px", fontSize: "0.87rem",
-                              color: "rgba(61, 60, 58,0.82)", lineHeight: 1.4, transition: "all 0.18s",
+                              color: "rgba(27, 42, 59, 0.82)", lineHeight: 1.4, transition: "all 0.18s",
                             }}>
                              {act}
                           </motion.div>
@@ -580,7 +580,7 @@ const Weather = () => {
                           {analysis.activitiesToAvoid.map((a, i) => (
                             <motion.div key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.38 + i * 0.06 }}
-                              style={{ fontSize: "0.87rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.5, display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                              style={{ fontSize: "0.87rem", color: "rgba(27, 42, 59, 0.72)", lineHeight: 1.5, display: "flex", gap: "8px", alignItems: "flex-start" }}>
                               <span style={{ color: "#F87171", flexShrink: 0 }}></span> {a}
                             </motion.div>
                           ))}
@@ -588,13 +588,13 @@ const Weather = () => {
                       </AICard>
 
                       <AICard icon="" title="Best Time of Day" delay={0.42}>
-                        <p style={{ fontSize: "0.9rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.7 }}>{analysis.bestTimeOfDay}</p>
+                        <p style={{ fontSize: "0.9rem", color: "rgba(27, 42, 59, 0.72)", lineHeight: 1.7 }}>{analysis.bestTimeOfDay}</p>
                       </AICard>
                     </div>
 
                     {/* Week Trend */}
                     <AICard icon="" title="5-Day Weather Trend" delay={0.49}>
-                      <p style={{ fontSize: "0.9rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.7 }}>{analysis.weekTrend}</p>
+                      <p style={{ fontSize: "0.9rem", color: "rgba(27, 42, 59, 0.72)", lineHeight: 1.7 }}>{analysis.weekTrend}</p>
                     </AICard>
                   </div>
                 </motion.div>

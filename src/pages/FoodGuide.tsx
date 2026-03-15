@@ -9,12 +9,13 @@ import Input, { GetLocationButton } from "../components/ui/Input";
 import Loader from "../components/ui/Loader";
 import { generateFoodGuide } from "../lib/groq";
 import type { FoodItem } from "../types";
+import { colors } from "../theme";
 
 const SPICE_COLORS: Record<string, string> = {
-  mild: "#4ade80",
-  medium: "#fbbf24",
-  hot: "#f97316",
-  "very hot": "#ef4444",
+  mild: "#059669",
+  medium: "#d97706",
+  hot: "#ea580c",
+  "very hot": "#dc2626",
 };
 
 const FoodGuide = () => {
@@ -40,10 +41,10 @@ const FoodGuide = () => {
 
   return (
     <PageWrapper>
-      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         Local <GradientText>Food Guide</GradientText>
       </h1>
-      <p style={{ textAlign: "center", color: "rgba(61, 60, 58,0.55)", marginBottom: "40px", fontSize: "0.95rem" }}>
+      <p style={{ textAlign: "center", color: colors.textMuted, marginBottom: "40px", fontSize: "0.95rem" }}>
         Discover must-try local dishes and where to find them
       </p>
 
@@ -75,23 +76,23 @@ const FoodGuide = () => {
             <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
               <Card style={{ height: "100%" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
-                  <h3 style={{ fontSize: "1rem", fontWeight: 700, flex: 1 }}>{food.name}</h3>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, flex: 1, color: colors.textMain }}>{food.name}</h3>
                   {food.isVegetarian && (
-                    <span style={{ fontSize: "0.7rem", backgroundColor: "rgba(34,197,94,0.15)", color: "#4ade80", padding: "2px 8px", borderRadius: "6px", border: "1px solid rgba(34,197,94,0.25)", whiteSpace: "nowrap", marginLeft: "8px" }}>
+                    <span style={{ fontSize: "0.7rem", backgroundColor: "rgba(22,163,74,0.1)", color: "#059669", padding: "2px 8px", borderRadius: "6px", border: "1px solid rgba(22,163,74,0.2)", whiteSpace: "nowrap", marginLeft: "8px" }}>
                        Veg
                     </span>
                   )}
                 </div>
-                <p style={{ fontSize: "0.83rem", color: "rgba(61, 60, 58,0.6)", marginBottom: "12px", lineHeight: 1.5 }}>
+                <p style={{ fontSize: "0.83rem", color: colors.textBody, marginBottom: "12px", lineHeight: 1.6 }}>
                   {food.description}
                 </p>
                 <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "10px", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: "0.73rem", color: SPICE_COLORS[food.spiceLevel] ?? "#f0f0f0", backgroundColor: "rgba(0, 0, 0, 0.05)", padding: "2px 10px", borderRadius: "8px", border: `1px solid ${SPICE_COLORS[food.spiceLevel] ?? "rgba(0, 0, 0, 0.05)"}30` }}>
+                  <span style={{ fontSize: "0.73rem", color: SPICE_COLORS[food.spiceLevel] ?? colors.textMuted, backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "2px 10px", borderRadius: "8px", border: `1px solid ${SPICE_COLORS[food.spiceLevel] ?? "rgba(0, 0, 0, 0.06)"}30` }}>
                      {food.spiceLevel}
                   </span>
-                  <span style={{ fontSize: "0.73rem", color: "#A4D8E1" }}>{food.priceRange}</span>
+                  <span style={{ fontSize: "0.73rem", color: colors.accentStrong, fontWeight: 600 }}>{food.priceRange}</span>
                 </div>
-                <p style={{ fontSize: "0.78rem", color: "rgba(61, 60, 58,0.4)" }}>
+                <p style={{ fontSize: "0.78rem", color: colors.textSubtle }}>
                    {food.whereToFind.slice(0, 2).join(", ")}
                 </p>
               </Card>

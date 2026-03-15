@@ -9,6 +9,7 @@ import Input, { GetLocationButton } from "../components/ui/Input";
 import Loader from "../components/ui/Loader";
 import { generateSafetyGuide } from "../lib/groq";
 import type { SafetyTip } from "../types";
+import { colors } from "../theme";
 
 const SafetyGuide = () => {
   const [destination, setDestination] = useState("");
@@ -44,10 +45,10 @@ const SafetyGuide = () => {
 
   return (
     <PageWrapper>
-      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Safety</GradientText> Guide
       </h1>
-      <p style={{ textAlign: "center", color: "rgba(61, 60, 58,0.55)", marginBottom: "40px", fontSize: "0.95rem" }}>
+      <p style={{ textAlign: "center", color: colors.textMuted, marginBottom: "40px", fontSize: "0.95rem" }}>
         Stay informed and travel confidently
       </p>
 
@@ -78,23 +79,23 @@ const SafetyGuide = () => {
         >
           {tips.map((tip, i) => (
             <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-              <Card style={{ height: "100%", borderLeft: "3px solid #2A9D8F" }}>
-                <h3 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <Card style={{ height: "100%", borderLeft: `3px solid ${colors.accentStrong}` }}>
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", color: colors.textMain }}>
                   <span>{CATEGORY_ICONS[tip.category.toLowerCase()] ?? null}</span>
                   {tip.category}
                 </h3>
                 <ul style={{ paddingLeft: "0px", listStyle: "none" }}>
                   {tip.tips.map((t, j) => (
-                    <li key={j} style={{ display: "flex", gap: "8px", marginBottom: "8px", fontSize: "0.83rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.5 }}>
-                      <span style={{ color: "#2A9D8F", flexShrink: 0, marginTop: "2px" }}>•</span>
+                    <li key={j} style={{ display: "flex", gap: "8px", marginBottom: "8px", fontSize: "0.83rem", color: colors.textBody, lineHeight: 1.6 }}>
+                      <span style={{ color: colors.accentStrong, flexShrink: 0, marginTop: "2px" }}>•</span>
                       {t}
                     </li>
                   ))}
                 </ul>
                 {tip.emergency && (
-                  <div style={{ marginTop: "12px", padding: "10px 14px", backgroundColor: "rgba(239,68,68,0.08)", borderRadius: "10px", border: "1px solid rgba(239,68,68,0.2)", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <ExclamationTriangleIcon style={{ width: 14, height: 14, color: "#f97171" }} />
-                    <p style={{ fontSize: "0.78rem", color: "#f87171", margin: 0 }}>Emergency: {tip.emergency}</p>
+                  <div style={{ marginTop: "12px", padding: "10px 14px", backgroundColor: "rgba(220,38,38,0.06)", borderRadius: "10px", border: "1px solid rgba(220,38,38,0.15)", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <ExclamationTriangleIcon style={{ width: 14, height: 14, color: "#DC2626" }} />
+                    <p style={{ fontSize: "0.78rem", color: "#DC2626", margin: 0 }}>Emergency: {tip.emergency}</p>
                   </div>
                 )}
               </Card>

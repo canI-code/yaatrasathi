@@ -10,6 +10,7 @@ import Select from "../components/ui/Select";
 import Loader from "../components/ui/Loader";
 import { generateHotelRecommendations } from "../lib/groq";
 import type { Hotel } from "../types";
+import { colors } from "../theme";
 
 const STAR_OPTIONS = [
   { label: "Any Stars", value: "any" },
@@ -43,21 +44,21 @@ const Hotels = () => {
   const renderStars = (count: number) =>
     Array.from({ length: 5 }, (_, i) =>
       i < count
-        ? <StarSolid key={i} style={{ width: 14, height: 14, color: "#FBBF24" }} />
-        : <StarIcon key={i} style={{ width: 14, height: 14, color: "rgba(0, 0, 0, 0.05)" }} />
+        ? <StarSolid key={i} style={{ width: 14, height: 14, color: "#D97706" }} />
+        : <StarIcon key={i} style={{ width: 14, height: 14, color: "rgba(0, 0, 0, 0.1)" }} />
     );
 
   return (
     <PageWrapper>
-      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Hotels</GradientText> & Stays
       </h1>
-      <p style={{ textAlign: "center", color: "rgba(61, 60, 58,0.55)", marginBottom: "40px", fontSize: "0.95rem" }}>
+      <p style={{ textAlign: "center", color: colors.textMuted, marginBottom: "40px", fontSize: "0.95rem" }}>
         AI-curated hotel recommendations for any destination
       </p>
 
       <div style={{ maxWidth: "700px", margin: "0 auto 40px" }}>
-        <Card gradient padding="28px">
+        <Card padding="28px">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
             <div style={{ gridColumn: "1/-1" }}>
               <Input
@@ -84,21 +85,21 @@ const Hotels = () => {
       {hotels.length > 0 && !loading && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
           {hotels.map((hotel, i) => (
-            <Card key={i} gradient>
+            <Card key={i}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-                <h3 style={{ fontSize: "1rem", fontWeight: 700, flex: 1 }}>{hotel.name}</h3>
+                <h3 style={{ fontSize: "1rem", fontWeight: 700, flex: 1, color: colors.textMain }}>{hotel.name}</h3>
                 <div style={{ display: "flex", gap: "2px", marginLeft: "8px" }}>{renderStars(hotel.stars)}</div>
               </div>
-              <p style={{ fontSize: "0.82rem", color: "rgba(61, 60, 58,0.5)", marginBottom: "12px" }}> {hotel.location}</p>
+              <p style={{ fontSize: "0.82rem", color: colors.textMuted, marginBottom: "12px" }}> {hotel.location}</p>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#A4D8E1" }}>₹{hotel.pricePerNight.toLocaleString()}<span style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.4)" }}>/night</span></span>
-                <span style={{ fontSize: "0.8rem", backgroundColor: "rgba(34,197,94,0.15)", color: "#4ade80", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(34,197,94,0.25)" }}>
+                <span style={{ fontSize: "1.1rem", fontWeight: 700, color: colors.accentStrong }}>₹{hotel.pricePerNight.toLocaleString()}<span style={{ fontSize: "0.75rem", color: colors.textSubtle }}>/night</span></span>
+                <span style={{ fontSize: "0.8rem", backgroundColor: "rgba(22,163,74,0.1)", color: "#059669", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(22,163,74,0.2)" }}>
                    {hotel.rating}
                 </span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                 {hotel.amenities.slice(0, 4).map((a) => (
-                  <span key={a} style={{ fontSize: "0.72rem", color: "rgba(61, 60, 58,0.55)", backgroundColor: "rgba(0, 0, 0, 0.05)", padding: "3px 9px", borderRadius: "8px", border: "1px solid rgba(0, 0, 0, 0.05)" }}>
+                  <span key={a} style={{ fontSize: "0.72rem", color: colors.textMuted, backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "3px 9px", borderRadius: "8px", border: "1px solid rgba(0, 0, 0, 0.05)" }}>
                     {a}
                   </span>
                 ))}

@@ -61,18 +61,18 @@ const LOADING_MESSAGES = [
 ];
 
 const BREAKDOWN_ROWS = [
-  { key: "accommodation" as const, label: "Accommodation", icon: "", color: "#A4D8E1" },
+  { key: "accommodation" as const, label: "Accommodation", icon: "", color: "#2A9D8F" },
   { key: "food" as const, label: "Food & Dining", icon: "", color: "#2A9D8F" },
-  { key: "transport" as const, label: "Transport", icon: "", color: "#A4D8E1" },
-  { key: "activities" as const, label: "Activities & Sightseeing", icon: "", color: "#A4D8E1" },
+  { key: "transport" as const, label: "Transport", icon: "", color: "#2A9D8F" },
+  { key: "activities" as const, label: "Activities & Sightseeing", icon: "", color: "#2A9D8F" },
   { key: "shopping" as const, label: "Shopping", icon: "", color: "#2A9D8F" },
-  { key: "miscellaneous" as const, label: "Miscellaneous", icon: "", color: "#A4D8E1" },
+  { key: "miscellaneous" as const, label: "Miscellaneous", icon: "", color: "#2A9D8F" },
 ];
 
 // ─── Glassmorphism Styles ─────────────────────────────────────────────────────
 
 const glassCard: React.CSSProperties = {
-  background: "transparent",
+  background: "rgba(255, 255, 255, 0.45)",
   border: "1px solid rgba(0, 0, 0, 0.05)",
   borderRadius: "16px",
   padding: "28px",
@@ -84,7 +84,7 @@ const glassCard: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontSize: "0.78rem",
   fontWeight: 600,
-  color: "rgba(61, 60, 58,0.55)",
+  color: "rgba(27, 42, 59, 0.58)",
   textTransform: "uppercase",
   letterSpacing: "0.06em",
   marginBottom: "8px",
@@ -152,7 +152,7 @@ const MetricCard = ({
     className="ai-hover-card" style={{ padding: "22px 20px", textAlign: "center", cursor: "default" }}
   >
     <div style={{ fontSize: "2rem", marginBottom: "8px" }}>{icon}</div>
-    <p style={{ fontSize: "0.72rem", color: "rgba(61, 60, 58,0.5)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "6px" }}>
+    <p style={{ fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "6px" }}>
       {label}
     </p>
     <p style={{ fontSize: "1.55rem", fontWeight: 900 }}>
@@ -160,7 +160,7 @@ const MetricCard = ({
         {isCount ? <span>{value}</span> : <AnimatedValue target={value} />}
       </GradientText>
     </p>
-    {sub && <p style={{ fontSize: "0.72rem", color: "rgba(61, 60, 58,0.4)", marginTop: "4px" }}>{sub}</p>}
+    {sub && <p style={{ fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", marginTop: "4px" }}>{sub}</p>}
   </motion.div>
 );
 
@@ -269,7 +269,7 @@ const BudgetEstimator = () => {
           <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "12px" }}>
             <GradientText> Smart Budget Estimator</GradientText>
           </h1>
-          <p style={{ color: "rgba(61, 60, 58,0.55)", fontSize: "1.05rem", maxWidth: "520px", margin: "0 auto" }}>
+          <p style={{ color: "rgba(27, 42, 59, 0.58)", fontSize: "1.05rem", maxWidth: "520px", margin: "0 auto" }}>
             Get a detailed AI-powered cost breakdown for your trip — accommodation, food, transport & more.
           </p>
         </motion.div>
@@ -285,7 +285,7 @@ const BudgetEstimator = () => {
               transition={{ duration: 0.4 }}
               style={glassCard}
             >
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "24px", color: "rgba(61, 60, 58,0.9)" }}>
+              <h2 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "24px", color: "#1B2A3B" }}>
                  Trip Details
               </h2>
 
@@ -372,10 +372,10 @@ const BudgetEstimator = () => {
                     <div style={{
                       width: "18px", height: "18px", borderRadius: "50%", background: "#fff",
                       position: "absolute", top: "2px", left: includeFlights ? "22px" : "2px",
-                      transition: "left 0.25s", boxShadow: "0 1px 4px rgba(0,0,0,0.4)",
+                      transition: "left 0.25s", boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
                     }} />
                   </div>
-                  <span style={{ marginLeft: "12px", fontSize: "0.9rem", color: "rgba(61, 60, 58,0.75)", cursor: "pointer" }}
+                  <span style={{ marginLeft: "12px", fontSize: "0.9rem", color: "rgba(27, 42, 59, 0.78)", cursor: "pointer" }}
                     onClick={() => setIncludeFlights((p) => !p)}>
                      Include inter-city flights / trains in cost
                   </span>
@@ -426,10 +426,10 @@ const BudgetEstimator = () => {
               {/* Summary */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.45 }} className="ai-hover-card" style={{ marginBottom: "20px" }}>
-                <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "10px", color: "rgba(61, 60, 58,0.9)" }}>
+                <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "10px", color: "#1B2A3B" }}>
                    Budget Overview
                 </h3>
-                <p style={{ color: "rgba(61, 60, 58,0.65)", lineHeight: 1.7, fontSize: "0.95rem" }}>
+                <p style={{ color: "rgba(27, 42, 59, 0.68)", lineHeight: 1.7, fontSize: "0.95rem" }}>
                   {budget.summary}
                 </p>
               </motion.div>
@@ -437,7 +437,7 @@ const BudgetEstimator = () => {
               {/* Breakdown Table */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.38, duration: 0.45 }} className="ai-hover-card" style={{ marginBottom: "20px" }}>
-                <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "20px", color: "rgba(61, 60, 58,0.9)" }}>
+                <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "20px", color: "#1B2A3B" }}>
                    Detailed Breakdown
                 </h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -451,7 +451,7 @@ const BudgetEstimator = () => {
                             {row.icon} {row.label}
                           </span>
                           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                            <span style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.4)" }}>{pct}%</span>
+                            <span style={{ fontSize: "0.75rem", color: "rgba(27, 42, 59, 0.55)" }}>{pct}%</span>
                             <span style={{ fontSize: "0.95rem", fontWeight: 700, color: row.color }}>
                               ₹{amount.toLocaleString()}
                             </span>
@@ -466,7 +466,7 @@ const BudgetEstimator = () => {
                     );
                   })}
                   <div style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", paddingTop: "14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontWeight: 700, color: "rgba(61, 60, 58,0.9)" }}> Total</span>
+                    <span style={{ fontWeight: 700, color: "#1B2A3B" }}> Total</span>
                     <span style={{ fontSize: "1.2rem", fontWeight: 900 }}>
                       <GradientText>₹{budget.total.toLocaleString()}</GradientText>
                     </span>
@@ -477,8 +477,8 @@ const BudgetEstimator = () => {
               {/* Tips */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.46, duration: 0.45 }} className="ai-hover-card" style={{ marginBottom: "20px" }}>
-                <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "18px", color: "rgba(61, 60, 58,0.9)", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <LightBulbIcon style={{ width: 20, height: 20, color: "#A4D8E1" }} />
+                <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "18px", color: "#1B2A3B", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <LightBulbIcon style={{ width: 20, height: 20, color: "#2A9D8F" }} />
                   Money-Saving Tips
                 </h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -490,9 +490,9 @@ const BudgetEstimator = () => {
                         minWidth: "22px", height: "22px", borderRadius: "50%",
                         background: "#F0F4F8",
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: "0.7rem", fontWeight: 700, color: "#3D3C3A", flexShrink: 0,
+                        fontSize: "0.7rem", fontWeight: 700, color: "#1B2A3B", flexShrink: 0,
                       }}>{i + 1}</span>
-                      <p style={{ fontSize: "0.9rem", color: "rgba(61, 60, 58,0.72)", lineHeight: 1.6, margin: 0 }}>{tip}</p>
+                      <p style={{ fontSize: "0.9rem", color: "rgba(27, 42, 59, 0.75)", lineHeight: 1.6, margin: 0 }}>{tip}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -502,8 +502,8 @@ const BudgetEstimator = () => {
               {budget.cheaperAlternatives?.length > 0 && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.54, duration: 0.45 }} className="ai-hover-card" style={{ marginBottom: "20px" }}>
-                  <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "18px", color: "rgba(61, 60, 58,0.9)", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <ArrowsRightLeftIcon style={{ width: 20, height: 20, color: "#A4D8E1" }} />
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "18px", color: "#1B2A3B", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <ArrowsRightLeftIcon style={{ width: 20, height: 20, color: "#2A9D8F" }} />
                     Cheaper Alternatives
                   </h3>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "14px" }}>
@@ -513,16 +513,16 @@ const BudgetEstimator = () => {
                         whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(16,185,129,0.15)" }}
                         style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: "12px", padding: "16px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#A4D8E1", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2A9D8F", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                             {alt.category}
                           </span>
-                          <span style={{ background: "rgba(16,185,129,0.15)", color: "#A4D8E1", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700 }}>
+                          <span style={{ background: "rgba(16,185,129,0.15)", color: "#2A9D8F", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700 }}>
                             Save ₹{alt.savings.toLocaleString()}
                           </span>
                         </div>
-                        <p style={{ fontSize: "0.82rem", color: "rgba(61, 60, 58,0.4)", margin: "0 0 6px", textDecoration: "line-through" }}>{alt.original}</p>
-                        <p style={{ fontSize: "0.88rem", color: "rgba(61, 60, 58,0.85)", margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
-                          <CheckCircleIcon style={{ width: 14, height: 14, color: "#A4D8E1", flexShrink: 0 }} />
+                        <p style={{ fontSize: "0.82rem", color: "rgba(27, 42, 59, 0.55)", margin: "0 0 6px", textDecoration: "line-through" }}>{alt.original}</p>
+                        <p style={{ fontSize: "0.88rem", color: "rgba(27, 42, 59, 0.88)", margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
+                          <CheckCircleIcon style={{ width: 14, height: 14, color: "#2A9D8F", flexShrink: 0 }} />
                           {alt.cheaper}
                         </p>
                       </motion.div>
@@ -557,7 +557,7 @@ const BudgetEstimator = () => {
       {/* CSS */}
       <style>{`
         .ai-hover-card {
-          background: #ffffff !important;
+          background: rgba(255, 255, 255, 0.55) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
           border: 1px solid rgba(0, 0, 0, 0.05) !important;
           border-radius: 16px;
           transition: all 0.2s ease !important;

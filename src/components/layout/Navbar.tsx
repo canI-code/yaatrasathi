@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { NavLink } from "../../types";
-import { colors, shadows } from "../../theme";
+import { colors } from "../../theme";
 
 const NAV_LINKS: NavLink[] = [
   { label: "Home", path: "/" },
@@ -30,7 +30,7 @@ const Navbar = () => {
       <motion.header
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         style={{
           position: "fixed",
           top: 0,
@@ -44,7 +44,7 @@ const Navbar = () => {
           style={{
             maxWidth: "1400px",
             margin: "0 auto",
-            padding: "14px clamp(16px, 4vw, 40px)",
+            padding: "12px clamp(16px, 4vw, 40px)",
           }}
         >
           <div
@@ -53,13 +53,12 @@ const Navbar = () => {
               alignItems: "center",
               justifyContent: "space-between",
               gap: "16px",
-              backgroundColor: colors.glassSoft,
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
+              backgroundColor: "rgba(255, 255, 255, 0.55)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
               borderRadius: "999px",
-              border: `1px solid ${colors.glassBorder}`,
-              boxShadow: shadows.soft,
-              padding: "10px 16px",
+              border: `1px solid rgba(164, 216, 225, 0.3)`,
+              padding: "8px 18px",
               pointerEvents: "auto",
             }}
           >
@@ -77,19 +76,18 @@ const Navbar = () => {
                 style={{
                   width: 32,
                   height: 32,
-                  borderRadius: "12px",
+                  borderRadius: "10px",
                   backgroundColor: colors.accentStrong,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 8px 20px rgba(42,157,143,0.45)",
                 }}
               >
                 <PaperAirplaneIcon
                   style={{
                     width: 18,
                     height: 18,
-                    color: colors.background,
+                    color: "#ffffff",
                     transform: "rotate(-30deg)",
                   }}
                 />
@@ -107,8 +105,9 @@ const Navbar = () => {
                 </span>
                 <span
                   style={{
-                    fontSize: "0.7rem",
+                    fontSize: "0.68rem",
                     color: colors.textSubtle,
+                    fontWeight: 500,
                   }}
                 >
                   AI travel companion
@@ -121,14 +120,14 @@ const Navbar = () => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "4px",
+                gap: "2px",
               }}
             >
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "4px",
+                  gap: "2px",
                 }}
               >
                 {NAV_LINKS.map((item) => {
@@ -140,13 +139,13 @@ const Navbar = () => {
                       style={{
                         display: "none",
                         textDecoration: "none",
-                        padding: "6px 12px",
+                        padding: "6px 13px",
                         borderRadius: "999px",
                         fontSize: "0.8rem",
-                        fontWeight: 500,
-                        color: active ? colors.background : colors.textMuted,
+                        fontWeight: active ? 600 : 500,
+                        color: active ? "#ffffff" : colors.textMuted,
                         backgroundColor: active ? colors.accentStrong : "transparent",
-                        transition: "background-color 0.18s ease, color 0.18s ease",
+                        transition: "background-color 0.25s ease, color 0.25s ease",
                       }}
                       className="nav-pill-desktop"
                     >
@@ -155,7 +154,6 @@ const Navbar = () => {
                   );
                 })}
               </div>
-
             </nav>
 
             {/* Right: primary CTA + mobile menu */}
@@ -178,15 +176,18 @@ const Navbar = () => {
                   style={{
                     borderRadius: "999px",
                     border: "none",
-                    padding: "8px 16px",
+                    padding: "8px 18px",
                     backgroundColor: colors.accentStrong,
-                    color: colors.background,
+                    color: "#ffffff",
                     fontSize: "0.8rem",
                     fontWeight: 600,
                     cursor: "pointer",
-                    boxShadow: "0 10px 30px rgba(42,157,143,0.4)",
                     fontFamily: "Inter, sans-serif",
+                    boxShadow: "none",
+                    transition: "filter 0.25s ease",
                   }}
+                  onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(1.08)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.filter = "brightness(1)")}
                 >
                   Plan a trip
                 </button>
@@ -196,14 +197,15 @@ const Navbar = () => {
                 onClick={() => setOpen((v) => !v)}
                 style={{
                   borderRadius: "999px",
-                  border: `1px solid ${colors.glassBorder}`,
-                  backgroundColor: "rgba(246,249,252,0.9)",
+                  border: `1px solid rgba(0, 0, 0, 0.08)`,
+                  backgroundColor: "rgba(255, 255, 255, 0.6)",
                   width: 34,
                   height: 34,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
+                  boxShadow: "none",
                 }}
                 className="nav-menu-toggle"
               >
@@ -234,25 +236,25 @@ const Navbar = () => {
           <>
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
+              animate={{ opacity: 0.3 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.25 }}
               onClick={() => setOpen(false)}
               style={{
                 position: "fixed",
                 inset: 0,
-                backgroundColor: "#020617",
+                backgroundColor: "#0F172A",
                 zIndex: 35,
               }}
             />
             <motion.div
-              initial={{ y: -20, opacity: 0 }}
+              initial={{ y: -16, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              exit={{ y: -16, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
                 position: "fixed",
-                top: 70,
+                top: 68,
                 left: 0,
                 right: 0,
                 zIndex: 45,
@@ -267,16 +269,15 @@ const Navbar = () => {
               >
                 <div
                   style={{
-                    backgroundColor: colors.glassLight,
-                    backdropFilter: "blur(18px)",
-                    WebkitBackdropFilter: "blur(18px)",
-                    borderRadius: "24px",
-                    border: `1px solid ${colors.glassBorder}`,
-                    boxShadow: shadows.medium,
-                    padding: "16px 16px 10px",
+                    backgroundColor: "rgba(255, 255, 255, 0.88)",
+                    backdropFilter: "blur(24px)",
+                    WebkitBackdropFilter: "blur(24px)",
+                    borderRadius: "22px",
+                    border: `1px solid rgba(164, 216, 225, 0.3)`,
+                    padding: "14px 14px 10px",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "4px",
+                    gap: "2px",
                   }}
                 >
                   {NAV_LINKS.map((item) => {
@@ -288,17 +289,17 @@ const Navbar = () => {
                         onClick={() => setOpen(false)}
                         style={{
                           textDecoration: "none",
-                          padding: "10px 10px",
-                          borderRadius: "14px",
+                          padding: "11px 14px",
+                          borderRadius: "12px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "space-between",
                           gap: "8px",
                           color: active ? colors.accentStrong : colors.textMain,
-                          backgroundColor: active ? "rgba(164,216,225,0.4)" : "transparent",
+                          backgroundColor: active ? "rgba(42, 157, 143, 0.08)" : "transparent",
                           fontSize: "0.9rem",
-                          fontWeight: 500,
-                          transition: "background-color 0.15s ease",
+                          fontWeight: active ? 600 : 500,
+                          transition: "background-color 0.2s ease",
                         }}
                       >
                         <span>{item.label}</span>
@@ -333,6 +334,10 @@ const Navbar = () => {
           .nav-menu-toggle {
             display: none !important;
           }
+        }
+        .nav-pill-desktop:hover {
+          background-color: rgba(42, 157, 143, 0.08) !important;
+          color: ${colors.accentStrong} !important;
         }
       `}</style>
     </>

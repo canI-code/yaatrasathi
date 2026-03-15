@@ -15,27 +15,23 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const VARIANT_STYLES = {
   primary: {
     background: colors.accentStrong,
-    color: colors.background,
+    color: "#ffffff",
     border: `1px solid ${colors.accentStrong}`,
-    boxShadow: "0 10px 30px rgba(42, 157, 143, 0.35)",
   },
   secondary: {
-    background: colors.accentSoft,
+    background: "rgba(164, 216, 225, 0.2)",
     color: colors.textMain,
-    border: `1px solid ${colors.accentSoft}`,
-    boxShadow: "0 8px 24px rgba(148, 163, 184, 0.25)",
+    border: `1px solid rgba(164, 216, 225, 0.45)`,
   },
   ghost: {
     background: "transparent",
     color: colors.accentStrong,
-    border: `1px solid rgba(148, 163, 184, 0.35)`,
-    boxShadow: "none",
+    border: `1px solid rgba(0, 0, 0, 0.1)`,
   },
   danger: {
-    background: "#FF6B6B",
-    color: colors.background,
-    border: "1px solid #D42C2C",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    background: "#DC2626",
+    color: "#ffffff",
+    border: "1px solid #DC2626",
   },
 };
 
@@ -61,9 +57,9 @@ const Button = ({
 
   return (
     <motion.button
-      whileHover={isDisabled ? undefined : { y: -1, filter: "brightness(1.1)" }}
-      whileTap={isDisabled ? undefined : { y: 2, scale: 0.98, filter: "brightness(0.9)", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.8), 0 0 0 rgba(0,0,0,0)" }}
-      transition={{ duration: 0.1, ease: "easeOut" }}
+      whileHover={isDisabled ? undefined : { y: -1, filter: "brightness(1.06)" }}
+      whileTap={isDisabled ? undefined : { y: 1, scale: 0.98 }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
       disabled={isDisabled}
       style={{
         ...VARIANT_STYLES[variant],
@@ -76,8 +72,9 @@ const Button = ({
         justifyContent: "center",
         gap: "8px",
         opacity: isDisabled ? 0.55 : 1,
-        transition: "opacity 0.2s ease, box-shadow 0.2s ease",
+        transition: "opacity 0.25s ease, filter 0.25s ease",
         width: fullWidth ? "100%" : "auto",
+        boxShadow: "none",
         ...style,
       }}
       {...(rest as Parameters<typeof motion.button>[0])}
@@ -90,8 +87,8 @@ const Button = ({
             display: "inline-block",
             width: "16px",
             height: "16px",
-            border: "2px solid rgba(0, 0, 0, 0.1)",
-            borderTopColor: "#3D3C3A",
+            border: "2px solid rgba(255, 255, 255, 0.3)",
+            borderTopColor: "#ffffff",
             borderRadius: "50%",
           }}
         />

@@ -9,6 +9,7 @@ import Input, { GetLocationButton } from "../components/ui/Input";
 import Loader from "../components/ui/Loader";
 import { generateTransportOptions } from "../lib/groq";
 import type { TransportOption } from "../types";
+import { colors } from "../theme";
 
 const TravelOptions = () => {
   const [from, setFrom] = useState("");
@@ -34,19 +35,19 @@ const TravelOptions = () => {
 
   return (
     <PageWrapper>
-      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Travel</GradientText> Options
       </h1>
-      <p style={{ textAlign: "center", color: "rgba(61, 60, 58,0.55)", marginBottom: "40px", fontSize: "0.95rem" }}>
+      <p style={{ textAlign: "center", color: colors.textMuted, marginBottom: "40px", fontSize: "0.95rem" }}>
         Compare all ways to get from A to B
       </p>
 
       <div style={{ maxWidth: "700px", margin: "0 auto 40px" }}>
-        <Card gradient padding="28px">
+        <Card padding="28px">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <Input label="From" placeholder="Origin city" value={from} onChange={(e) => setFrom(e.target.value)} leftIcon={<TruckIcon style={{ width: 18, height: 18 }} />} rightIcon={<GetLocationButton onLocation={setFrom} />} />
             <Input label="To" placeholder="Destination city" value={to} onChange={(e) => setTo(e.target.value)} />
-            {error && <p style={{ gridColumn: "1/-1", color: "#ef4444", fontSize: "0.82rem", margin: 0 }}>{error}</p>}
+            {error && <p style={{ gridColumn: "1/-1", color: colors.error, fontSize: "0.82rem", margin: 0 }}>{error}</p>}
             <div style={{ gridColumn: "1/-1" }}>
               <Button fullWidth onClick={handleSearch} loading={loading} leftIcon={<SparklesIcon style={{ width: 18, height: 18 }} />}>
                 Compare Transport Options
@@ -69,26 +70,26 @@ const TravelOptions = () => {
             <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
               <Card style={{ height: "100%" }}>
                 <div style={{ display: "flex", gap: "12px", alignItems: "center", marginBottom: "14px" }}>
-                  <div style={{ width: 40, height: 40, borderRadius: "10px", background: "#F0F4F8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
-                    {opt.type === "flight" ? "" : opt.type === "train" ? "" : opt.type === "bus" ? "" : opt.type === "car" ? "" : ""}
+                  <div style={{ width: 40, height: 40, borderRadius: "10px", background: "rgba(164, 216, 225, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
+                    {opt.type === "flight" ? "✈" : opt.type === "train" ? "🚂" : opt.type === "bus" ? "🚌" : opt.type === "car" ? "🚗" : "🚀"}
                   </div>
                   <div>
-                    <h3 style={{ fontSize: "0.95rem", fontWeight: 700 }}>{opt.name}</h3>
-                    <p style={{ fontSize: "0.78rem", color: "rgba(61, 60, 58,0.45)" }}>{opt.type}</p>
+                    <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: colors.textMain }}>{opt.name}</h3>
+                    <p style={{ fontSize: "0.78rem", color: colors.textSubtle }}>{opt.type}</p>
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: "12px", marginBottom: "12px" }}>
-                  <span style={{ fontSize: "0.82rem", color: "#A4D8E1", fontWeight: 600 }}> {opt.cost}</span>
-                  <span style={{ fontSize: "0.82rem", color: "rgba(61, 60, 58,0.55)" }}> {opt.duration}</span>
+                  <span style={{ fontSize: "0.82rem", color: colors.accentStrong, fontWeight: 600 }}> {opt.cost}</span>
+                  <span style={{ fontSize: "0.82rem", color: colors.textMuted }}> {opt.duration}</span>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                   <div>
-                    <p style={{ fontSize: "0.72rem", color: "#4ade80", fontWeight: 600, marginBottom: "4px" }}> Pros</p>
-                    {opt.pros.slice(0, 3).map((p, j) => <p key={j} style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.6)", marginBottom: "2px" }}>• {p}</p>)}
+                    <p style={{ fontSize: "0.72rem", color: "#059669", fontWeight: 600, marginBottom: "4px" }}>✓ Pros</p>
+                    {opt.pros.slice(0, 3).map((p, j) => <p key={j} style={{ fontSize: "0.75rem", color: colors.textMuted, marginBottom: "2px" }}>• {p}</p>)}
                   </div>
                   <div>
-                    <p style={{ fontSize: "0.72rem", color: "#f87171", fontWeight: 600, marginBottom: "4px" }}> Cons</p>
-                    {opt.cons.slice(0, 3).map((c, j) => <p key={j} style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.6)", marginBottom: "2px" }}>• {c}</p>)}
+                    <p style={{ fontSize: "0.72rem", color: "#DC2626", fontWeight: 600, marginBottom: "4px" }}>✗ Cons</p>
+                    {opt.cons.slice(0, 3).map((c, j) => <p key={j} style={{ fontSize: "0.75rem", color: colors.textMuted, marginBottom: "2px" }}>• {c}</p>)}
                   </div>
                 </div>
               </Card>

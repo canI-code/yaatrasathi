@@ -10,7 +10,7 @@ const Footer = () => {
     <footer
       style={{
         backgroundColor: "transparent",
-        padding: "40px 24px 24px",
+        padding: "48px 24px 28px",
         marginTop: "auto",
       }}
     >
@@ -19,17 +19,19 @@ const Footer = () => {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "32px",
-            marginBottom: "28px",
-            padding: "20px 24px",
-            borderRadius: "24px",
-            backgroundColor: "rgba(246,249,252,0.9)",
-            border: `1px solid ${colors.glassBorder}`,
+            gap: "36px",
+            marginBottom: "32px",
+            padding: "28px 28px",
+            borderRadius: "22px",
+            backgroundColor: "rgba(255, 255, 255, 0.45)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            border: `1px solid rgba(164, 216, 225, 0.25)`,
           }}
         >
           {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
               <div
                 style={{
                   width: 32,
@@ -41,7 +43,7 @@ const Footer = () => {
                   justifyContent: "center",
                 }}
               >
-                <PaperAirplaneIcon style={{ width: 18, height: 18, color: colors.background }} />
+                <PaperAirplaneIcon style={{ width: 18, height: 18, color: "#ffffff" }} />
               </div>
               <span
                 style={{
@@ -53,14 +55,14 @@ const Footer = () => {
                 YatraSathi
               </span>
             </div>
-            <p style={{ color: colors.textMuted, fontSize: "0.85rem", lineHeight: 1.6 }}>
+            <p style={{ color: colors.textMuted, fontSize: "0.85rem", lineHeight: 1.7 }}>
               Your AI-powered travel companion. Plan smarter, explore further.
             </p>
           </div>
 
           {/* Pages column 1 */}
           <div>
-            <p style={{ color: "#2A9D8F", fontWeight: 600, marginBottom: "12px", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <p style={{ color: colors.accentStrong, fontWeight: 600, marginBottom: "14px", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Features
             </p>
             {[
@@ -77,10 +79,10 @@ const Footer = () => {
                     color: colors.textMuted,
                     textDecoration: "none",
                     fontSize: "0.85rem",
-                    transition: "color 0.2s",
+                    transition: "color 0.25s ease",
                   }}
-                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#2A9D8F")}
-                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(61, 60, 58,0.55)")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = colors.accentStrong)}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = colors.textMuted)}
                 >
                   {l.label}
                 </Link>
@@ -90,7 +92,7 @@ const Footer = () => {
 
           {/* Pages column 2 */}
           <div>
-            <p style={{ color: "#2A9D8F", fontWeight: 600, marginBottom: "12px", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <p style={{ color: colors.accentStrong, fontWeight: 600, marginBottom: "14px", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Explore
             </p>
             {[
@@ -106,10 +108,10 @@ const Footer = () => {
                     color: colors.textMuted,
                     textDecoration: "none",
                     fontSize: "0.85rem",
-                    transition: "color 0.2s",
+                    transition: "color 0.25s ease",
                   }}
-                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#2A9D8F")}
-                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(61, 60, 58,0.55)")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = colors.accentStrong)}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = colors.textMuted)}
                 >
                   {l.label}
                 </Link>
@@ -119,10 +121,10 @@ const Footer = () => {
 
           {/* Tagline */}
           <div>
-            <p style={{ color: "#2A9D8F", fontWeight: 600, marginBottom: "12px", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <p style={{ color: colors.accentStrong, fontWeight: 600, marginBottom: "14px", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Powered by AI
             </p>
-            <p style={{ color: colors.textMuted, fontSize: "0.82rem", lineHeight: 1.6 }}>
+            <p style={{ color: colors.textMuted, fontSize: "0.83rem", lineHeight: 1.7 }}>
               Leveraging Groq AI for lightning-fast travel planning, Mapbox for interactive maps, and real-time weather data.
             </p>
           </div>
@@ -135,7 +137,7 @@ const Footer = () => {
             paddingTop: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: "12px",
+            gap: "14px",
           }}
         >
           {/* Hackathon credit */}
@@ -146,10 +148,12 @@ const Footer = () => {
               justifyContent: "center",
               gap: "24px",
               flexWrap: "wrap",
-              padding: "12px 0",
-              borderRadius: "12px",
-              background: "#F0F4F8",
-              border: "1px solid rgba(42, 157, 143,0.1)",
+              padding: "14px 0",
+              borderRadius: "14px",
+              background: "rgba(255, 255, 255, 0.35)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              border: "1px solid rgba(0, 0, 0, 0.04)",
             }}
           >
             <span style={{ fontSize: "0.78rem", color: colors.textMuted, fontWeight: 600 }}>
@@ -158,11 +162,11 @@ const Footer = () => {
             <span style={{ color: colors.textSubtle, fontSize: "0.7rem" }}>|</span>
             <span style={{ fontSize: "0.78rem", color: colors.textSubtle }}>
               Powered by{" "}
-              <span style={{ color: colors.accentSoft, fontWeight: 600 }}>Groq</span>
+              <span style={{ color: colors.accentStrong, fontWeight: 600 }}>Groq</span>
               {" "}·{" "}
-              <span style={{ color: colors.accentSoft, fontWeight: 600 }}>Mapbox</span>
+              <span style={{ color: colors.accentStrong, fontWeight: 600 }}>Mapbox</span>
               {" "}·{" "}
-              <span style={{ color: "#38bdf8", fontWeight: 600 }}>OpenWeather</span>
+              <span style={{ color: "#0EA5E9", fontWeight: 600 }}>OpenWeather</span>
             </span>
           </div>
 
@@ -180,8 +184,8 @@ const Footer = () => {
               © {year} YatraSathi. All rights reserved.
             </p>
             <motion.div
-              animate={{ opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 3, repeat: Infinity }}
               style={{ fontSize: "0.75rem", color: colors.accentStrong }}
             >
                Plan smarter. Travel better.

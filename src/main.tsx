@@ -8,16 +8,16 @@ const system = createSystem(defaultConfig, {
     tokens: {
       colors: {
         brand: {
-          50: { value: "#fff0f0" },
-          100: { value: "#ffd6d6" },
-          200: { value: "#ffadad" },
-          300: { value: "#ff8080" },
-          400: { value: "#ff5252" },
+          50: { value: "#f0fdfa" },
+          100: { value: "#ccfbf1" },
+          200: { value: "#99f6e4" },
+          300: { value: "#5eead4" },
+          400: { value: "#2dd4bf" },
           500: { value: "#2A9D8F" },
-          600: { value: "#e63636" },
-          700: { value: "#cc2424" },
-          800: { value: "#991b1b" },
-          900: { value: "#7f1d1d" },
+          600: { value: "#238a7d" },
+          700: { value: "#1c766b" },
+          800: { value: "#155e56" },
+          900: { value: "#0f4741" },
         },
         accent: {
           500: { value: "#A4D8E1" },
@@ -28,21 +28,21 @@ const system = createSystem(defaultConfig, {
         body: { value: "Inter, sans-serif" },
       },
       radii: {
-        card: { value: "16px" },
+        card: { value: "20px" },
         button: { value: "12px" },
       },
     },
     semanticTokens: {
       colors: {
-        "chakra-body-bg": { value: "#0d0d0f" },
-        "chakra-body-text": { value: "#f0f0f0" },
+        "chakra-body-bg": { value: "#f9f1ec" },
+        "chakra-body-text": { value: "#1B2A3B" },
       },
     },
   },
   globalCss: {
     body: {
-      bg: "#0d0d0f",
-      color: "#3D3C3A",
+      bg: "#f9f1ec",
+      color: "#1B2A3B",
       fontFamily: "Inter, sans-serif",
     },
   },

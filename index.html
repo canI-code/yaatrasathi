@@ -19,23 +19,65 @@
         margin: 0;
         padding: 0;
       }
+      html {
+        scroll-behavior: smooth;
+      }
       html,
       body,
       #root {
         height: 100%;
         font-family: "Inter", sans-serif;
-        background-color: #f9f6f2;
-        color: #3D3C3A;
+        background-color: #f9f1ec;
+        color: #1B2A3B;
       }
+      /* Smooth scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #F0F4F8;
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #2A9D8F;
-        border-radius: 4px;
+        background: rgba(42, 157, 143, 0.35);
+        border-radius: 6px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(42, 157, 143, 0.55);
+      }
+      /* Global smooth transitions */
+      a, button {
+        transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+      }
+      /* Textarea global override */
+      .textarea-override {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        color: #1B2A3B;
+        font-size: 0.92rem;
+        font-family: "Inter", sans-serif;
+        outline: none;
+        resize: vertical;
+        min-height: 80px;
+        box-sizing: border-box;
+        transition: border-color 0.25s ease;
+      }
+      .textarea-override:focus {
+        border-color: rgba(42, 157, 143, 0.45);
+      }
+      /* AI hover card – only functional cards get hover */
+      .ai-hover-card {
+        background: rgba(255, 255, 255, 0.55) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        border-radius: 18px;
+        padding: 24px;
+        transition: border-color 0.3s ease !important;
       }
     </style>
   </head>

@@ -33,9 +33,9 @@ import type { MapLocation } from "../types";
 const FILTER_TABS = [
   { id: "all",        label: "All",          emoji: "", color: "#2A9D8F" },
   { id: "attraction", label: "Attractions",  emoji: "", color: "#2A9D8F" },
-  { id: "hotel",      label: "Hotels",       emoji: "", color: "#A4D8E1" },
-  { id: "food",       label: "Food",         emoji: "", color: "#A4D8E1" },
-  { id: "transport",  label: "Transport",    emoji: "", color: "#A4D8E1" },
+  { id: "hotel",      label: "Hotels",       emoji: "", color: "#2A9D8F" },
+  { id: "food",       label: "Food",         emoji: "", color: "#2A9D8F" },
+  { id: "transport",  label: "Transport",    emoji: "", color: "#2A9D8F" },
 ] as const;
 
 type FilterId = typeof FILTER_TABS[number]["id"];
@@ -77,9 +77,9 @@ const StarRating = ({ rating }: { rating?: number }) => {
   const full = Math.floor(rating);
   const half = rating - full >= 0.5;
   return (
-    <span style={{ fontSize: "0.65rem", color: "#A4D8E1", letterSpacing: "1px" }}>
+    <span style={{ fontSize: "0.65rem", color: "#2A9D8F", letterSpacing: "1px" }}>
       {"".repeat(full)}{half ? "½" : ""}{"".repeat(Math.max(0, 5 - full - (half ? 1 : 0)))}
-      <span style={{ color: "rgba(61, 60, 58,0.4)", marginLeft: "4px" }}>{rating.toFixed(1)}</span>
+      <span style={{ color: "rgba(27, 42, 59, 0.55)", marginLeft: "4px" }}>{rating.toFixed(1)}</span>
     </span>
   );
 };
@@ -193,7 +193,7 @@ const ExploreMap = () => {
         <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.7rem)", fontWeight: 900, marginBottom: "8px" }}>
           <GradientText> Explore</GradientText> the Map
         </h1>
-        <p style={{ color: "rgba(61, 60, 58,0.5)", fontSize: "0.95rem" }}>
+        <p style={{ color: "rgba(27, 42, 59, 0.55)", fontSize: "0.95rem" }}>
           AI-powered tourist discovery — 15 handpicked spots on an interactive map
         </p>
       </motion.div>
@@ -230,7 +230,7 @@ const ExploreMap = () => {
             backdropFilter: "blur(12px)",
           }}>
             <div style={{ position: "relative", marginBottom: "10px" }}>
-              <MapPinIcon style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, color: "rgba(61, 60, 58,0.4)", pointerEvents: "none" }} />
+              <MapPinIcon style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, color: "rgba(27, 42, 59, 0.55)", pointerEvents: "none" }} />
               <input
                 placeholder="City name — e.g. Paris, Goa..."
                 value={city}
@@ -242,7 +242,7 @@ const ExploreMap = () => {
                   padding: "10px 40px 10px 36px",
                   background: "rgba(0, 0, 0, 0.05)",
                   border: "1px solid rgba(0, 0, 0, 0.05)",
-                  borderRadius: "10px", color: "#3D3C3A",
+                  borderRadius: "10px", color: "#1B2A3B",
                   fontSize: "0.88rem", outline: "none",
                   transition: "border-color 0.2s",
                   opacity: exploreLoading ? 0.5 : 1,
@@ -266,7 +266,7 @@ const ExploreMap = () => {
             {/* Popular quick-picks */}
             {!places.length && !exploreLoading && (
               <div style={{ marginTop: "10px" }}>
-                <p style={{ fontSize: "0.68rem", color: "rgba(61, 60, 58,0.35)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "6px" }}>
+                <p style={{ fontSize: "0.68rem", color: "rgba(27, 42, 59, 0.55)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "6px" }}>
                   Popular destinations
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -278,7 +278,7 @@ const ExploreMap = () => {
                       style={{
                         padding: "4px 10px", borderRadius: "12px", fontSize: "0.73rem",
                         border: "1px solid rgba(0, 0, 0, 0.05)",
-                        background: "rgba(0, 0, 0, 0.05)", color: "rgba(61, 60, 58,0.75)",
+                        background: "rgba(0, 0, 0, 0.05)", color: "rgba(27, 42, 59, 0.78)",
                         cursor: "pointer", transition: "all 0.15s",
                       }}
                       onMouseEnter={(e) => { (e.target as HTMLButtonElement).style.background = "rgba(42, 157, 143,0.15)"; (e.target as HTMLButtonElement).style.borderColor = "rgba(42, 157, 143,0.4)"; }}
@@ -312,8 +312,8 @@ const ExploreMap = () => {
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
-                <FunnelIcon style={{ width: 12, height: 12, color: "rgba(61, 60, 58,0.4)" }} />
-                <span style={{ fontSize: "0.68rem", color: "rgba(61, 60, 58,0.4)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <FunnelIcon style={{ width: 12, height: 12, color: "rgba(27, 42, 59, 0.55)" }} />
+                <span style={{ fontSize: "0.68rem", color: "rgba(27, 42, 59, 0.55)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   Filter by type
                 </span>
               </div>
@@ -331,7 +331,7 @@ const ExploreMap = () => {
                         fontSize: "0.73rem", fontWeight: 600,
                         border: `1px solid ${isActive ? tab.color : "rgba(0, 0, 0, 0.05)"}`,
                         background: isActive ? `${tab.color}22` : "rgba(0, 0, 0, 0.05)",
-                        color: isActive ? tab.color : "rgba(61, 60, 58,0.6)",
+                        color: isActive ? tab.color : "rgba(27, 42, 59, 0.62)",
                         cursor: "pointer", transition: "all 0.15s",
                         display: "flex", alignItems: "center", gap: "4px",
                       }}
@@ -341,7 +341,7 @@ const ExploreMap = () => {
                         <span style={{
                           width: "16px", height: "16px", borderRadius: "50%",
                           background: isActive ? tab.color : "rgba(0, 0, 0, 0.05)",
-                          color: isActive ? "#3D3C3A" : "rgba(61, 60, 58,0.6)",
+                          color: isActive ? "#1B2A3B" : "rgba(27, 42, 59, 0.62)",
                           fontSize: "0.6rem", fontWeight: 700,
                           display: "flex", alignItems: "center", justifyContent: "center",
                         }}>
@@ -370,7 +370,7 @@ const ExploreMap = () => {
               }}
             >
               <div style={{ fontSize: "2rem", marginBottom: "10px" }}></div>
-              <p style={{ fontSize: "0.8rem", color: "rgba(61, 60, 58,0.6)", lineHeight: 1.6 }}>
+              <p style={{ fontSize: "0.8rem", color: "rgba(27, 42, 59, 0.62)", lineHeight: 1.6 }}>
                 {EXPLORE_MSGS[loadingMsgIdx]}
               </p>
               <div style={{ marginTop: "12px", display: "flex", gap: "4px", justifyContent: "center" }}>
@@ -404,12 +404,12 @@ const ExploreMap = () => {
               {/* City header */}
               <div style={{ padding: "6px 4px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <p style={{ fontSize: "0.65rem", color: "rgba(61, 60, 58,0.35)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <p style={{ fontSize: "0.65rem", color: "rgba(27, 42, 59, 0.55)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     Exploring
                   </p>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 700, color: "#3D3C3A" }}>{exploredCity}</p>
+                  <p style={{ fontSize: "0.95rem", fontWeight: 700, color: "#1B2A3B" }}>{exploredCity}</p>
                 </div>
-                <span style={{ fontSize: "0.72rem", color: "rgba(61, 60, 58,0.4)" }}>
+                <span style={{ fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)" }}>
                   {filteredPlaces.length} place{filteredPlaces.length !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -453,11 +453,11 @@ const ExploreMap = () => {
 
                       {/* Details */}
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#3D3C3A", margin: "0 0 3px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1B2A3B", margin: "0 0 3px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                           {place.name}
                         </p>
                         <StarRating rating={place.rating} />
-                        <p style={{ fontSize: "0.72rem", color: "rgba(61, 60, 58,0.5)", margin: "3px 0 5px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                        <p style={{ fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", margin: "3px 0 5px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                           {place.description}
                         </p>
                         <CategoryBadge type={type} />
@@ -477,7 +477,7 @@ const ExploreMap = () => {
               gap: "12px", opacity: 0.5, padding: "20px",
             }}>
               <div style={{ fontSize: "3rem" }}></div>
-              <p style={{ fontSize: "0.85rem", color: "rgba(61, 60, 58,0.6)", textAlign: "center", lineHeight: 1.6 }}>
+              <p style={{ fontSize: "0.85rem", color: "rgba(27, 42, 59, 0.62)", textAlign: "center", lineHeight: 1.6 }}>
                 Search any city and let AI discover top tourist spots for you
               </p>
             </div>
@@ -519,7 +519,7 @@ const ExploreMap = () => {
             }}>
               <div style={{ fontSize: "3rem" }}></div>
               <p style={{ color: "#2A9D8F", fontWeight: 700, textAlign: "center" }}>Map Failed to Load</p>
-              <p style={{ color: "rgba(61, 60, 58,0.5)", fontSize: "0.85rem", textAlign: "center", maxWidth: "300px" }}>
+              <p style={{ color: "rgba(27, 42, 59, 0.55)", fontSize: "0.85rem", textAlign: "center", maxWidth: "300px" }}>
                 {mapError}
               </p>
             </div>
@@ -548,7 +548,7 @@ const ExploreMap = () => {
                 >
                   
                 </motion.div>
-                <p style={{ color: "#3D3C3A", fontWeight: 600, fontSize: "1rem" }}>
+                <p style={{ color: "#1B2A3B", fontWeight: 600, fontSize: "1rem" }}>
                   {EXPLORE_MSGS[loadingMsgIdx]}
                 </p>
               </motion.div>
@@ -575,7 +575,7 @@ const ExploreMap = () => {
               {FILTER_TABS.filter((t) => t.id !== "all" && (filterCounts[t.id] ?? 0) > 0).map((tab) => (
                 <div key={tab.id} style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                   <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: tab.color }} />
-                  <span style={{ fontSize: "0.68rem", color: "rgba(61, 60, 58,0.65)", fontWeight: 600 }}>
+                  <span style={{ fontSize: "0.68rem", color: "rgba(27, 42, 59, 0.68)", fontWeight: 600 }}>
                     {tab.emoji} {tab.label}
                   </span>
                 </div>
@@ -597,7 +597,7 @@ const ExploreMap = () => {
               }}
             >
               <MapPinIcon style={{ width: 14, height: 14, color: "#2A9D8F" }} />
-              <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "#3D3C3A" }}>
+              <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "#1B2A3B" }}>
                 {places.length} places in <GradientText style={{ fontSize: "0.78rem" }}>{exploredCity}</GradientText>
               </span>
             </motion.div>

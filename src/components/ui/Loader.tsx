@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PaperAirplaneIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
+import { colors } from "../../theme";
 
 const MESSAGES = [
   "Exploring destinations...",
@@ -51,7 +52,7 @@ const Loader = ({ fullScreen = false, size = "md", message }: LoaderProps) => {
             position: "absolute",
             inset: 0,
             borderRadius: "50%",
-            border: "2px dashed rgba(164, 216, 225, 0.3)", // A7A8D9 softer tone
+            border: "2px dashed rgba(164, 216, 225, 0.4)",
           }}
         />
 
@@ -72,16 +73,15 @@ const Loader = ({ fullScreen = false, size = "md", message }: LoaderProps) => {
               width: iconSize,
               height: iconSize,
               borderRadius: "50%",
-              backgroundColor: "#2A9D8F",
+              backgroundColor: colors.accentStrong,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 4px 12px rgba(42, 157, 143, 0.4)",
               marginTop: "-1px",
             }}
           >
             <PaperAirplaneIcon
-              style={{ width: iconSize * 0.55, height: iconSize * 0.55, color: "#3D3C3A" }}
+              style={{ width: iconSize * 0.55, height: iconSize * 0.55, color: "#ffffff" }}
             />
           </motion.div>
         </motion.div>
@@ -95,7 +95,7 @@ const Loader = ({ fullScreen = false, size = "md", message }: LoaderProps) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            color: "#A4D8E1",
+            color: colors.accentSoft,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -113,7 +113,7 @@ const Loader = ({ fullScreen = false, size = "md", message }: LoaderProps) => {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.4 }}
           style={{
-            color: "#3D3C3A",
+            color: colors.textBody,
             fontSize: size === "md" ? "0.9rem" : "1rem",
             fontWeight: 500,
             textAlign: "center",
@@ -132,7 +132,7 @@ const Loader = ({ fullScreen = false, size = "md", message }: LoaderProps) => {
         style={{
           position: "fixed",
           inset: 0,
-          backgroundColor: "#F6F9FC",
+          backgroundColor: colors.background,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

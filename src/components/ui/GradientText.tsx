@@ -18,7 +18,7 @@ const GradientText = ({
     <Tag
       className={className}
       style={{
-        color: "#2A9D8F", // Flat primary color instead of a gradient
+        color: "#2A9D8F",
         display: "inline-block",
         textShadow: "none",
         fontWeight: 800,

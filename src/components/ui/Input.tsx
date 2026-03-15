@@ -39,10 +39,10 @@ const Input = ({ label, error, hint, leftIcon, rightIcon, style, ...rest }: Inpu
             style={{
               position: "absolute",
               left: "14px",
-              color: focused ? "#2A9D8F" : "rgba(61, 60, 58,0.4)",
+              color: focused ? colors.accentStrong : colors.textSubtle,
               display: "flex",
               alignItems: "center",
-              transition: "color 0.2s ease",
+              transition: "color 0.25s ease",
               pointerEvents: "none",
             }}
           >
@@ -57,15 +57,23 @@ const Input = ({ label, error, hint, leftIcon, rightIcon, style, ...rest }: Inpu
             width: "100%",
             padding: leftIcon ? "11px 14px 11px 44px" : "11px 14px",
             paddingRight: rightIcon ? "44px" : "14px",
-            backgroundColor: colors.glassLight,
-            border: `1px solid ${focused ? colors.accentStrong : colors.glassBorder}`,
-            borderRadius: "10px",
+            backgroundColor: "rgba(255, 255, 255, 0.45)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            border: `1px solid ${
+              error
+                ? colors.error
+                : focused
+                ? "rgba(42, 157, 143, 0.45)"
+                : "rgba(0, 0, 0, 0.08)"
+            }`,
+            borderRadius: "12px",
             color: colors.textMain,
             fontSize: "0.9rem",
             fontFamily: "Inter, sans-serif",
             outline: "none",
-            transition: "border-color 0.18s ease, box-shadow 0.18s ease",
-            boxShadow: focused ? "0 0 0 1px rgba(42,157,143,0.18), 0 10px 30px rgba(15,23,42,0.08)" : "0 0 0 1px rgba(148,163,184,0.15)",
+            transition: "border-color 0.25s ease",
+            boxShadow: "none",
             ...style,
           }}
           {...rest}
@@ -76,7 +84,7 @@ const Input = ({ label, error, hint, leftIcon, rightIcon, style, ...rest }: Inpu
             style={{
               position: "absolute",
               right: "14px",
-              color: "rgba(61, 60, 58,0.4)",
+              color: colors.textSubtle,
               display: "flex",
               alignItems: "center",
             }}
@@ -139,9 +147,9 @@ export const GetLocationButton = ({ onLocation }: { onLocation: (loc: string) =>
         alignItems: "center",
         justifyContent: "center",
         padding: "4px",
-        color: loading ? "rgba(42, 157, 143, 0.5)" : "#2A9D8F",
+        color: loading ? "rgba(42, 157, 143, 0.5)" : colors.accentStrong,
         pointerEvents: "auto",
-        transition: "color 0.2s"
+        transition: "color 0.25s"
       }}
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{ width: 18, height: 18 }}>

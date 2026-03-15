@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import GradientText from "../components/ui/GradientText";
 import Button from "../components/ui/Button";
+import { colors } from "../theme";
 
 const NotFound = () => {
   return (
@@ -15,17 +16,9 @@ const NotFound = () => {
         justifyContent: "center",
         padding: "24px",
         textAlign: "center",
+        backgroundColor: colors.background,
       }}
     >
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        style={{ fontSize: "6rem", marginBottom: "24px" }}
-      >
-        
-      </motion.div>
-
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -39,7 +32,7 @@ const NotFound = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        style={{ fontSize: "1.1rem", color: "rgba(61, 60, 58,0.6)", marginBottom: "8px" }}
+        style={{ fontSize: "1.1rem", color: colors.textMuted, marginBottom: "8px" }}
       >
         Oops! Looks like this destination doesn't exist.
       </motion.p>
@@ -48,9 +41,9 @@ const NotFound = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        style={{ fontSize: "0.9rem", color: "rgba(61, 60, 58,0.35)", marginBottom: "36px" }}
+        style={{ fontSize: "0.9rem", color: colors.textSubtle, marginBottom: "36px" }}
       >
-        The page you're looking for has flown away 
+        The page you're looking for has flown away ✈️
       </motion.p>
 
       <motion.div

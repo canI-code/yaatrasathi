@@ -81,7 +81,7 @@ const DAY_SECTIONS = [
 
 // Field label
 const FieldLabel = ({ children }: { children: React.ReactNode }) => (
-  <p style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(61, 60, 58,0.6)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+  <p style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(27, 42, 59, 0.62)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
     {children}
   </p>
 );
@@ -97,8 +97,8 @@ const GlassInput = (props: React.InputHTMLAttributes<HTMLInputElement> & { hasEr
         padding: "12px 16px",
         borderRadius: "12px",
         background: "rgba(0, 0, 0, 0.05)",
-        border: `1px solid ${hasError ? "#f87171" : "rgba(0, 0, 0, 0.05)"}`,
-        color: "#3D3C3A",
+        border: `1px solid ${hasError ? "#DC2626" : "rgba(0, 0, 0, 0.05)"}`,
+        color: "#1B2A3B",
         fontSize: "0.92rem",
         fontFamily: "Inter, sans-serif",
         outline: "none",
@@ -111,7 +111,7 @@ const GlassInput = (props: React.InputHTMLAttributes<HTMLInputElement> & { hasEr
         props.onFocus?.(e);
       }}
       onBlur={(e) => {
-        e.target.style.border = `1px solid ${hasError ? "#f87171" : "rgba(0, 0, 0, 0.05)"}`;
+        e.target.style.border = `1px solid ${hasError ? "#DC2626" : "rgba(0, 0, 0, 0.05)"}`;
         props.onBlur?.(e);
       }}
     />
@@ -146,7 +146,7 @@ const CustomSelect = ({ value, onChange, options, placeholder = "Select..." }: {
           borderRadius: "12px",
           background: "rgba(0, 0, 0, 0.04)",
           border: "1px solid rgba(0, 0, 0, 0.05)",
-          color: "#3D3C3A",
+          color: "#1B2A3B",
           fontSize: "0.92rem",
           fontFamily: "Inter, sans-serif",
           cursor: "pointer",
@@ -195,7 +195,7 @@ const CustomSelect = ({ value, onChange, options, placeholder = "Select..." }: {
                   cursor: "pointer",
                   fontSize: "0.92rem",
                   background: value === opt.value ? "rgba(42, 157, 143, 0.1)" : "transparent",
-                  color: value === opt.value ? "#2A9D8F" : "#3D3C3A",
+                  color: value === opt.value ? "#2A9D8F" : "#1B2A3B",
                   transition: "background 0.2s ease"
                 }}
                 onMouseEnter={(e) => {
@@ -225,7 +225,7 @@ const GlassTextarea = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>)
       borderRadius: "12px",
       background: "rgba(0, 0, 0, 0.05)",
       border: "1px solid rgba(0, 0, 0, 0.05)",
-      color: "#3D3C3A",
+      color: "#1B2A3B",
       fontSize: "0.92rem",
       fontFamily: "Inter, sans-serif",
       outline: "none",
@@ -304,19 +304,19 @@ const DayAccordion = ({ day, index, isOpen, onToggle }: {
           }}
         >
           <span style={{ fontSize: "0.6rem", color: "rgba(0, 0, 0, 0.1)", fontWeight: 700, lineHeight: 1 }}>DAY</span>
-          <span style={{ fontSize: "1.2rem", color: "#3D3C3A", fontWeight: 900, lineHeight: 1 }}>{day.day}</span>
+          <span style={{ fontSize: "1.2rem", color: "#1B2A3B", fontWeight: 900, lineHeight: 1 }}>{day.day}</span>
         </div>
         <div style={{ textAlign: "left", minWidth: 0 }}>
-          <p style={{ fontSize: "1rem", fontWeight: 700, color: "#3D3C3A", marginBottom: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <p style={{ fontSize: "1rem", fontWeight: 700, color: "#1B2A3B", marginBottom: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {day.theme}
           </p>
-          <p style={{ fontSize: "0.78rem", color: "rgba(61, 60, 58,0.45)" }}>
+          <p style={{ fontSize: "0.78rem", color: "rgba(27, 42, 59, 0.6)" }}>
             Est. ₹{day.estimatedCost?.toLocaleString() ?? "—"} per person
           </p>
         </div>
       </div>
       <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.25 }}>
-        <ChevronDownIcon style={{ width: 20, height: 20, color: "rgba(61, 60, 58,0.5)", flexShrink: 0 }} />
+        <ChevronDownIcon style={{ width: 20, height: 20, color: "rgba(27, 42, 59, 0.55)", flexShrink: 0 }} />
       </motion.div>
     </button>
 
@@ -350,19 +350,19 @@ const DayAccordion = ({ day, index, isOpen, onToggle }: {
                       border: "1px solid rgba(0, 0, 0, 0.05)",
                     }}
                   >
-                    <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#A4D8E1", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                    <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2A9D8F", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                       {icon} {label}
                     </p>
                     {Array.isArray(value) ? (
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                         {(value as string[]).map((item, i) => (
-                          <p key={i} style={{ fontSize: "0.85rem", color: "rgba(61, 60, 58,0.75)", lineHeight: 1.6, paddingLeft: "8px", borderLeft: "2px solid rgba(42, 157, 143,0.2)" }}>
+                          <p key={i} style={{ fontSize: "0.85rem", color: "rgba(27, 42, 59, 0.78)", lineHeight: 1.6, paddingLeft: "8px", borderLeft: "2px solid rgba(42, 157, 143,0.2)" }}>
                             {item}
                           </p>
                         ))}
                       </div>
                     ) : (
-                      <p style={{ fontSize: "0.85rem", color: "rgba(61, 60, 58,0.75)", lineHeight: 1.7 }}>
+                      <p style={{ fontSize: "0.85rem", color: "rgba(27, 42, 59, 0.78)", lineHeight: 1.7 }}>
                         {value as string}
                       </p>
                     )}
@@ -382,7 +382,7 @@ const DayAccordion = ({ day, index, isOpen, onToggle }: {
                   alignItems: "center",
                 }}
               >
-                <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#A4D8E1", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2A9D8F", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                    Daily Cost (per person)
                 </p>
                 <p style={{ fontSize: "1.1rem", fontWeight: 800, color: "#2A9D8F" }}>
@@ -558,7 +558,7 @@ ${window.location.href}`);
           <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 3rem)", fontWeight: 900, marginBottom: "10px", letterSpacing: "-0.5px" }}>
             <GradientText> AI Trip Planner</GradientText>
           </h1>
-          <p style={{ color: "rgba(61, 60, 58,0.5)", fontSize: "1rem" }}>
+          <p style={{ color: "rgba(27, 42, 59, 0.55)", fontSize: "1rem" }}>
             Get a complete day‑by‑day itinerary generated in seconds
           </p>
         </motion.div>
@@ -578,7 +578,7 @@ ${window.location.href}`);
                 style={{
                   padding: "clamp(24px, 4vw, 40px)",
                   borderRadius: "28px",
-                  background: "rgba(255, 255, 255, 0.8)",
+                  background: "rgba(255, 255, 255, 0.5)",
                     backdropFilter: "blur(24px)",
                     WebkitBackdropFilter: "blur(24px)",
                     border: "1px solid rgba(0, 0, 0, 0.08)",
@@ -596,14 +596,14 @@ ${window.location.href}`);
                   <div>
                     <FieldLabel> Source City</FieldLabel>
                     <Input placeholder="e.g. Delhi, Mumbai, Bangalore" value={source} onChange={(e) => setSource(e.target.value)} error={errors.source} rightIcon={<GetLocationButton onLocation={setSource} />} />
-                    {errors.source && <p style={{ color: "#f87171", fontSize: "0.78rem", marginTop: "6px" }}>{errors.source}</p>}
+                    {errors.source && <p style={{ color: "#DC2626", fontSize: "0.78rem", marginTop: "6px" }}>{errors.source}</p>}
                   </div>
 
                   {/* Destination City */}
                   <div>
                     <FieldLabel> Destination City</FieldLabel>
                     <Input placeholder="e.g. Goa, Manali, Kerala" value={destination} onChange={(e) => setDestination(e.target.value)} error={errors.destination} rightIcon={<GetLocationButton onLocation={setDestination} />} />
-                    {errors.destination && <p style={{ color: "#f87171", fontSize: "0.78rem", marginTop: "6px" }}>{errors.destination}</p>}
+                    {errors.destination && <p style={{ color: "#DC2626", fontSize: "0.78rem", marginTop: "6px" }}>{errors.destination}</p>}
                   </div>
 
                   {/* Days Slider */}
@@ -617,7 +617,7 @@ ${window.location.href}`);
                         onChange={(e) => { const v = parseInt(e.target.value || "0", 10); if(v <= 999) setDays(v); }}
                         placeholder="e.g. 5"
                       />
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "rgba(61, 60, 58,0.35)", marginTop: "4px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", marginTop: "4px" }}>
                       <span>1 day</span><span>30 days</span>
                     </div>
                   </div>
@@ -633,7 +633,7 @@ ${window.location.href}`);
                         onChange={(e) => { const v = parseInt(e.target.value || "0", 10); if(v <= 999) setTravelers(v); }}
                         placeholder="e.g. 2"
                       />
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "rgba(61, 60, 58,0.35)", marginTop: "4px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "rgba(27, 42, 59, 0.55)", marginTop: "4px" }}>
                       <span>1</span><span>20</span>
                     </div>
                   </div>
@@ -667,7 +667,7 @@ ${window.location.href}`);
                               borderRadius: "20px",
                               border: active ? "1px solid rgba(42, 157, 143,0.6)" : "1px solid rgba(0, 0, 0, 0.05)",
                               background: active ? "rgba(42, 157, 143, 0.1)" : "transparent",
-                                color: active ? "#2A9D8F" : "rgba(61, 60, 58, 0.55)",
+                                color: active ? "#2A9D8F" : "rgba(27, 42, 59, 0.58)",
                               fontSize: "0.8rem",
                               fontWeight: active ? 600 : 400,
                               cursor: "pointer",
@@ -704,7 +704,7 @@ ${window.location.href}`);
                 <div style={{ display: "flex", gap: "12px", marginTop: "32px", flexWrap: "wrap" }}>
                   <motion.div style={{ flex: 1, minWidth: "200px" }}>
                     <Button fullWidth size="lg" onClick={handleGenerate} disabled={loading}
-                      style={{ boxShadow: "0 8px 32px rgba(42, 157, 143,0.35)" }}>
+                      style={{  }}>
                       <SparklesIcon style={{ width: 20, height: 20 }} />
                        Generate Itinerary
                     </Button>
@@ -764,7 +764,7 @@ ${window.location.href}`);
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.35 }}
-                  style={{ fontSize: "1rem", color: "rgba(61, 60, 58,0.75)", marginBottom: "12px", fontWeight: 500 }}
+                  style={{ fontSize: "1rem", color: "rgba(27, 42, 59, 0.78)", marginBottom: "12px", fontWeight: 500 }}
                 >
                   {LOADING_MESSAGES[loadingMsgIdx]}
                 </motion.p>
@@ -805,12 +805,12 @@ ${window.location.href}`);
               }}
             >
               <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                <ExclamationTriangleIcon style={{ width: 20, height: 20, color: "#f87171", flexShrink: 0, marginTop: 2 }} />
+                <ExclamationTriangleIcon style={{ width: 20, height: 20, color: "#DC2626", flexShrink: 0, marginTop: 2 }} />
                 <div style={{ flex: 1 }}>
-                  <p style={{ color: "#f87171", fontWeight: 600, marginBottom: "6px", fontSize: "0.9rem" }}>
+                  <p style={{ color: "#DC2626", fontWeight: 600, marginBottom: "6px", fontSize: "0.9rem" }}>
                     Something went wrong
                   </p>
-                  <p style={{ color: "rgba(61, 60, 58,0.55)", fontSize: "0.84rem", lineHeight: 1.6 }}>{apiError}</p>
+                  <p style={{ color: "rgba(27, 42, 59, 0.58)", fontSize: "0.84rem", lineHeight: 1.6 }}>{apiError}</p>
                   <button
                     onClick={handleGenerate}
                     style={{
@@ -819,7 +819,7 @@ ${window.location.href}`);
                       borderRadius: "10px",
                       background: "rgba(239,68,68,0.15)",
                       border: "1px solid rgba(239,68,68,0.3)",
-                      color: "#f87171",
+                      color: "#DC2626",
                       fontSize: "0.84rem",
                       fontWeight: 600,
                       cursor: "pointer",
@@ -867,11 +867,11 @@ ${window.location.href}`);
                 <h2 style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 900, marginBottom: "8px", letterSpacing: "-0.5px" }}>
                   <GradientText>{source} → {destination}</GradientText>
                 </h2>
-                <p style={{ color: "rgba(61, 60, 58,0.5)", fontSize: "0.9rem", marginBottom: "16px" }}>
+                <p style={{ color: "rgba(27, 42, 59, 0.55)", fontSize: "0.9rem", marginBottom: "16px" }}>
                   {days} days · {travelers} traveller{travelers > 1 ? "s" : ""} · {plan.travelStyle || travelStyle} · {plan.budget || budgetLevel}
                 </p>
                 {plan.overview && (
-                  <p style={{ color: "rgba(61, 60, 58,0.7)", fontSize: "0.9rem", maxWidth: "640px", margin: "0 auto", lineHeight: 1.7 }}>
+                  <p style={{ color: "rgba(27, 42, 59, 0.72)", fontSize: "0.9rem", maxWidth: "640px", margin: "0 auto", lineHeight: 1.7 }}>
                     {plan.overview}
                   </p>
                 )}
@@ -895,7 +895,7 @@ ${window.location.href}`);
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", gap: "12px" }}>
                     <h3 style={{ fontSize: "1rem", fontWeight: 800 }}> Budget Breakdown</h3>
                     <div style={{ textAlign: "right" }}>
-                      <p style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.4)", marginBottom: "2px" }}>Total Estimated Cost</p>
+                      <p style={{ fontSize: "0.75rem", color: "rgba(27, 42, 59, 0.55)", marginBottom: "2px" }}>Total Estimated Cost</p>
                       <p style={{ fontSize: "1.4rem", fontWeight: 900, background: "#F0F4F8", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                         ₹{plan.totalEstimatedCost?.toLocaleString() ?? "—"}
                       </p>
@@ -907,7 +907,7 @@ ${window.location.href}`);
                       <thead>
                         <tr style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.05)" }}>
                           {["Category", "Amount", "Share", ""].map((h, i) => (
-                            <th key={i} style={{ textAlign: i === 0 ? "left" : "right", padding: "8px 12px", color: "rgba(61, 60, 58,0.4)", fontWeight: 600, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                            <th key={i} style={{ textAlign: i === 0 ? "left" : "right", padding: "8px 12px", color: "rgba(27, 42, 59, 0.55)", fontWeight: 600, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                               {h}
                             </th>
                           ))}
@@ -916,9 +916,9 @@ ${window.location.href}`);
                       <tbody>
                         {plan.budgetBreakdown.map((row, i) => (
                           <tr key={i} style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.05)" }}>
-                            <td style={{ padding: "10px 12px", color: "rgba(61, 60, 58,0.75)" }}>{row.category}</td>
-                            <td style={{ padding: "10px 12px", textAlign: "right", color: "#3D3C3A", fontWeight: 600 }}>₹{row.amount?.toLocaleString()}</td>
-                            <td style={{ padding: "10px 12px", textAlign: "right", color: "rgba(61, 60, 58,0.45)" }}>{row.percentage}%</td>
+                            <td style={{ padding: "10px 12px", color: "rgba(27, 42, 59, 0.78)" }}>{row.category}</td>
+                            <td style={{ padding: "10px 12px", textAlign: "right", color: "#1B2A3B", fontWeight: 600 }}>₹{row.amount?.toLocaleString()}</td>
+                            <td style={{ padding: "10px 12px", textAlign: "right", color: "rgba(27, 42, 59, 0.6)" }}>{row.percentage}%</td>
                             <td style={{ padding: "10px 12px", width: "100px" }}>
                               <div style={{ height: "6px", borderRadius: "4px", background: "rgba(0, 0, 0, 0.05)", overflow: "hidden" }}>
                                 <div style={{ height: "100%", width: `${row.percentage}%`, background: "#F0F4F8", borderRadius: "4px" }} />
@@ -945,13 +945,13 @@ ${window.location.href}`);
                   <div style={{ display: "flex", gap: "8px" }}>
                     <button
                       onClick={() => setOpenDays(new Set(plan.itinerary.map((d) => d.day)))}
-                      style={{ padding: "6px 12px", borderRadius: "8px", background: "rgba(0, 0, 0, 0.05)", border: "1px solid rgba(0, 0, 0, 0.05)", color: "rgba(61, 60, 58,0.55)", fontSize: "0.75rem", cursor: "pointer", fontFamily: "Inter" }}
+                      style={{ padding: "6px 12px", borderRadius: "8px", background: "rgba(0, 0, 0, 0.05)", border: "1px solid rgba(0, 0, 0, 0.05)", color: "rgba(27, 42, 59, 0.58)", fontSize: "0.75rem", cursor: "pointer", fontFamily: "Inter" }}
                     >
                       Expand All
                     </button>
                     <button
                       onClick={() => setOpenDays(new Set())}
-                      style={{ padding: "6px 12px", borderRadius: "8px", background: "rgba(0, 0, 0, 0.05)", border: "1px solid rgba(0, 0, 0, 0.05)", color: "rgba(61, 60, 58,0.55)", fontSize: "0.75rem", cursor: "pointer", fontFamily: "Inter" }}
+                      style={{ padding: "6px 12px", borderRadius: "8px", background: "rgba(0, 0, 0, 0.05)", border: "1px solid rgba(0, 0, 0, 0.05)", color: "rgba(27, 42, 59, 0.58)", fontSize: "0.75rem", cursor: "pointer", fontFamily: "Inter" }}
                     >
                       Collapse All
                     </button>
@@ -988,10 +988,10 @@ ${window.location.href}`);
                   <div style={{ display: "grid", gap: "10px" }}>
                     {plan.tips.map((tip, i) => (
                       <div key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                        <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#A4D8E1", background: "rgba(99,102,241,0.15)", borderRadius: "50%", width: "22px", height: "22px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2A9D8F", background: "rgba(99,102,241,0.15)", borderRadius: "50%", width: "22px", height: "22px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
                           {i + 1}
                         </span>
-                        <p style={{ fontSize: "0.85rem", color: "rgba(61, 60, 58,0.7)", lineHeight: 1.65 }}>{tip}</p>
+                        <p style={{ fontSize: "0.85rem", color: "rgba(27, 42, 59, 0.72)", lineHeight: 1.65 }}>{tip}</p>
                       </div>
                     ))}
                   </div>
@@ -1059,7 +1059,7 @@ ${window.location.href}`);
       {/* Range slider thumb style */}
       <style>{`
         .ai-hover-card {
-          background: #ffffff !important;
+          background: rgba(255, 255, 255, 0.55) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
           border: 1px solid rgba(0, 0, 0, 0.05) !important;
           transition: all 0.2s ease !important;
         }

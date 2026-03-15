@@ -9,13 +9,14 @@ import Input, { GetLocationButton } from "../components/ui/Input";
 import Loader from "../components/ui/Loader";
 import { generateBestTimeInfo } from "../lib/groq";
 import type { BestTimeInfo } from "../types";
+import { colors } from "../theme";
 
 const SEASON_COLORS: Record<string, string> = {
-  summer: "#f97316",
-  winter: "#60a5fa",
-  monsoon: "#34d399",
-  spring: "#a78bfa",
-  autumn: "#fbbf24",
+  summer: "#e77d11",
+  winter: "#2563eb",
+  monsoon: "#059669",
+  spring: "#7c3aed",
+  autumn: "#d97706",
 };
 
 const BestTime = () => {
@@ -41,15 +42,15 @@ const BestTime = () => {
 
   const renderRating = (rating: number) =>
     Array.from({ length: 5 }, (_, i) => (
-      <span key={i} style={{ color: i < rating ? "#fbbf24" : "rgba(0, 0, 0, 0.05)", fontSize: "14px" }}></span>
+      <span key={i} style={{ color: i < rating ? "#d97706" : "rgba(0, 0, 0, 0.1)", fontSize: "14px" }}>★</span>
     ));
 
   return (
     <PageWrapper>
-      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Best Time</GradientText> to Visit
       </h1>
-      <p style={{ textAlign: "center", color: "rgba(61, 60, 58,0.55)", marginBottom: "40px", fontSize: "0.95rem" }}>
+      <p style={{ textAlign: "center", color: colors.textMuted, marginBottom: "40px", fontSize: "0.95rem" }}>
         Find the perfect season for your destination
       </p>
 
@@ -79,7 +80,7 @@ const BestTime = () => {
           style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}
         >
           {seasons.map((s, i) => {
-            const color = SEASON_COLORS[s.season.toLowerCase()] ?? "#2A9D8F";
+            const color = SEASON_COLORS[s.season.toLowerCase()] ?? colors.accentStrong;
             return (
               <motion.div key={i} variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}>
                 <Card style={{ borderTop: `3px solid ${color}`, height: "100%" }}>
@@ -87,20 +88,20 @@ const BestTime = () => {
                     <h3 style={{ fontSize: "1rem", fontWeight: 700, color }}>{s.season}</h3>
                     <div style={{ display: "flex" }}>{renderRating(s.rating)}</div>
                   </div>
-                  <p style={{ fontSize: "0.78rem", color: "rgba(61, 60, 58,0.45)", marginBottom: "10px" }}>
+                  <p style={{ fontSize: "0.78rem", color: colors.textSubtle, marginBottom: "10px" }}>
                      {s.months.join(", ")}
                   </p>
-                  <p style={{ fontSize: "0.83rem", color: "rgba(61, 60, 58,0.7)", marginBottom: "12px", lineHeight: 1.5 }}>
+                  <p style={{ fontSize: "0.83rem", color: colors.textBody, marginBottom: "12px", lineHeight: 1.6 }}>
                     {s.weather}
                   </p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                     <div>
-                      <p style={{ fontSize: "0.72rem", color: "#4ade80", fontWeight: 600, marginBottom: "4px" }}> Pros</p>
-                      {s.pros.slice(0, 3).map((p, j) => <p key={j} style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.6)", marginBottom: "2px" }}>• {p}</p>)}
+                      <p style={{ fontSize: "0.72rem", color: "#059669", fontWeight: 600, marginBottom: "4px" }}>✓ Pros</p>
+                      {s.pros.slice(0, 3).map((p, j) => <p key={j} style={{ fontSize: "0.75rem", color: colors.textMuted, marginBottom: "2px" }}>• {p}</p>)}
                     </div>
                     <div>
-                      <p style={{ fontSize: "0.72rem", color: "#f87171", fontWeight: 600, marginBottom: "4px" }}> Cons</p>
-                      {s.cons.slice(0, 3).map((c, j) => <p key={j} style={{ fontSize: "0.75rem", color: "rgba(61, 60, 58,0.6)", marginBottom: "2px" }}>• {c}</p>)}
+                      <p style={{ fontSize: "0.72rem", color: "#DC2626", fontWeight: 600, marginBottom: "4px" }}>✗ Cons</p>
+                      {s.cons.slice(0, 3).map((c, j) => <p key={j} style={{ fontSize: "0.75rem", color: colors.textMuted, marginBottom: "2px" }}>• {c}</p>)}
                     </div>
                   </div>
                 </Card>
