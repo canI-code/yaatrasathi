@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
 import GradientText from "../components/ui/GradientText";
@@ -66,7 +66,7 @@ const DESTINATIONS = [
   { icon: <BuildingStorefrontIcon style={{ width: 28 }} />, name: "Jaipur", tagline: "The Pink City", query: "Jaipur, Rajasthan", image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=800&auto=format&fit=crop" },
   { icon: <MapPinIcon style={{ width: 28 }} />, name: "Kerala", tagline: "God's Own Country", query: "Kerala, India", image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=800&auto=format&fit=crop" },
   { icon: <HomeModernIcon style={{ width: 28 }} />, name: "Varanasi", tagline: "Spiritual Capital", query: "Varanasi, Uttar Pradesh", image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?q=80&w=800&auto=format&fit=crop" },
-  { icon: <GlobeAsiaAustraliaIcon style={{ width: 28 }} />, name: "Darjeeling", tagline: "Queen Of Hills", query: "Darjeeling, West Bengal", image: "https://images.unsplash.com/photo-1544634076-a900ceceb61f?q=80&w=800&auto=format&fit=crop" },
+  { icon: <GlobeAsiaAustraliaIcon style={{ width: 28 }} />, name: "Darjeeling", tagline: "Queen Of Hills", query: "Darjeeling, West Bengal", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop" },
 ];
 
 const STATS = [
@@ -104,6 +104,19 @@ const DestinationCard = ({
   icon, name, tagline, query, image,
 }: (typeof DESTINATIONS)[0]) => {
   const navigate = useNavigate();
+  const [imgSrc, setImgSrc] = useState(image);
+  const [imgFailed, setImgFailed] = useState(false);
+
+  // Fallback gradient per destination
+  const FALLBACK_GRADIENTS: Record<string, string> = {
+    Goa: "linear-gradient(135deg, #0ea5e9 0%, #2A9D8F 100%)",
+    Manali: "linear-gradient(135deg, #6366f1 0%, #a5b4fc 100%)",
+    Jaipur: "linear-gradient(135deg, #f97316 0%, #fbbf24 100%)",
+    Kerala: "linear-gradient(135deg, #16a34a 0%, #4ade80 100%)",
+    Varanasi: "linear-gradient(135deg, #dc2626 0%, #f97316 100%)",
+    Darjeeling: "linear-gradient(135deg, #0891b2 0%, #6366f1 100%)",
+  };
+  const fallback = FALLBACK_GRADIENTS[name] ?? "linear-gradient(135deg, #2A9D8F 0%, #A4D8E1 100%)";
 
   return (
     <motion.div
@@ -112,9 +125,33 @@ const DestinationCard = ({
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       onClick={() => {
-          const currentLoc = window.prompt("Please enter your current location:");
-          if (currentLoc) {
-            navigate(`/planner?source=${encodeURIComponent(currentLoc)}&destination=${encodeURIComponent(query)}`);
+          // Try to get current location via Geolocation API
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                try {
+                  const res = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
+                  );
+                  const data = await res.json();
+                  const city =
+                    data.address.city ||
+                    data.address.town ||
+                    data.address.village ||
+                    data.address.state ||
+                    data.address.country;
+                  navigate(
+                    `/planner?source=${encodeURIComponent(city ?? "")}&destination=${encodeURIComponent(query)}`
+                  );
+                } catch {
+                  navigate(`/planner?destination=${encodeURIComponent(query)}`);
+                }
+              },
+              () => {
+                // Permission denied or failed — go without source
+                navigate(`/planner?destination=${encodeURIComponent(query)}`);
+              }
+            );
           } else {
             navigate(`/planner?destination=${encodeURIComponent(query)}`);
           }
@@ -128,7 +165,16 @@ const DestinationCard = ({
         border: "1px solid rgba(0, 0, 0, 0.04)",
       }}
     >
-      <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${image})`, backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.5s ease" }} className="dest-img" />
+      <div style={{ position: "absolute", inset: 0, background: imgFailed ? fallback : undefined, backgroundImage: imgFailed ? undefined : `url(${imgSrc})`, backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.5s ease" }} className="dest-img">
+        {!imgFailed && (
+          <img
+            src={imgSrc}
+            alt={name}
+            onError={() => setImgFailed(true)}
+            style={{ display: "none" }}
+          />
+        )}
+      </div>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0) 100%)" }} />
       <div
         style={{

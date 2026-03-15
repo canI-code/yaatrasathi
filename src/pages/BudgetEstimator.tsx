@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Input, { GetLocationButton } from "../components/ui/Input";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 import Select from "../components/ui/Select";
 import Card from "../components/ui/Card";
 import {
@@ -181,11 +183,13 @@ const BudgetEstimator = () => {
 
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState(0);
-  const [budget, setBudget] = useState<BudgetBreakdown | null>(() => { try { const saved = sessionStorage.getItem("yatrasathi_budget"); if (saved) return JSON.parse(saved); } catch { } return null; });
+  const [budget, setBudget] = useState<BudgetBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  useUnsavedWarning(budget !== null);
 
   useEffect(() => {
     if (!loading) return;
@@ -208,7 +212,7 @@ const BudgetEstimator = () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
     setError(null);
     setLoading(true);
-    setBudget(null); sessionStorage.removeItem('yatrasathi_budget');
+    setBudget(null);
     setLoadingMsg(0);
     try {
       const result = await generateBudgetEstimate({
@@ -416,6 +420,7 @@ const BudgetEstimator = () => {
           {budget && !loading && (
             <motion.div key="results" ref={resultsRef} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }} style={{ marginTop: "40px" }}>
+              <SaveReminderBanner />
 
               {/* Metric Cards */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginBottom: "28px" }}>
@@ -545,7 +550,7 @@ const BudgetEstimator = () => {
                   leftIcon={copied ? <CheckCircleIcon style={{ width: 18, height: 18 }} /> : <ClipboardDocumentIcon style={{ width: 18, height: 18 }} />}>
                   {copied ? "Copied!" : "Copy Summary"}
                 </Button>
-                <Button variant="ghost" size="md" onClick={() => { setBudget(null); sessionStorage.removeItem('yatrasathi_budget'); setError(null); }}
+                <Button variant="ghost" size="md" onClick={() => { setBudget(null); setError(null); }}
                   leftIcon={<ArrowPathIcon style={{ width: 18, height: 18 }} />}>
                   Estimate Again
                 </Button>

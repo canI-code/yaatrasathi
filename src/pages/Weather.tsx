@@ -16,6 +16,8 @@ import { fetchWeather, fetchForecast } from "../lib/weather";
 import { generateWeatherAnalysis } from "../lib/groq";
 import type { WeatherData, WeatherForecast, WeatherAnalysis } from "../types";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 
 // ─── Weather condition → solid accent / glow ───────────────────────────────
 
@@ -249,6 +251,8 @@ const Weather = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  useUnsavedWarning(weather !== null);
+
   const theme = weather ? getTheme(weather.icon) : null;
 
   const handleSearch = async () => {
@@ -362,6 +366,7 @@ const Weather = () => {
           {weather && !loading && (
             <motion.div key="weather-results" ref={resultsRef} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}>
+              <SaveReminderBanner />
 
               {/* ── Hero Card ──────────────────────────────────────────── */}
                 <motion.div

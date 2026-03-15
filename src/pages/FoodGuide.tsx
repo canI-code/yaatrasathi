@@ -12,6 +12,8 @@ import { generateFoodGuide } from "../lib/groq";
 import type { FoodItem } from "../types";
 import { colors } from "../theme";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 
 const SPICE_COLORS: Record<string, string> = {
   mild: "#059669",
@@ -46,6 +48,8 @@ const FoodGuide = () => {
   const [foods, setFoods] = useState<FoodItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useUnsavedWarning(foods.length > 0);
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -123,6 +127,7 @@ const FoodGuide = () => {
 
       {foods.length > 0 && !loading && (
         <>
+          <SaveReminderBanner />
           {/* Top-right: save all with info tooltip */}
           <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 8, marginBottom: 16 }}>
             <div style={{ position: "relative" }}>

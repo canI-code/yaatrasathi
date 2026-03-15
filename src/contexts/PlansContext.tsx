@@ -58,13 +58,23 @@ export function PlansProvider({ children }: { children: ReactNode }) {
   const fetchPlans = useCallback(async () => {
     if (!user) return;
     setLoading(true);
+
+    // Fetch plans with their sections (only id and section_type needed for count/display)
     const { data, error } = await supabase
       .from('plans')
-      .select('*')
+      .select('*, plan_sections(id, section_type, saved_at)')
       .eq('user_id', user.id)
       .order('updated_at', { ascending: false });
 
-    if (!error && data) setPlans(data as Plan[]);
+    if (!error && data) {
+      // Supabase returns nested rows as plan_sections array — map to sections
+      const mapped = data.map((p: Record<string, unknown>) => ({
+        ...p,
+        sections: (p.plan_sections as unknown[]) ?? [],
+        plan_sections: undefined,
+      }));
+      setPlans(mapped as Plan[]);
+    }
     setLoading(false);
   }, [user]);
 
@@ -189,9 +199,15 @@ export function PlansProvider({ children }: { children: ReactNode }) {
         .eq('id', planId);
 
       setPlans((prev) =>
-        prev.map((p) =>
-          p.id === planId ? { ...p, updated_at: new Date().toISOString() } : p
-        )
+        prev.map((p) => {
+          if (p.id !== planId) return p;
+          const currentSections = p.sections ?? [];
+          const exists = currentSections.find((s) => s.section_type === sectionType);
+          const updatedSections = exists
+            ? currentSections.map((s) => s.section_type === sectionType ? { ...s, saved_at: new Date().toISOString() } : s)
+            : [...currentSections, { id: `temp_${Date.now()}`, plan_id: planId, section_type: sectionType, data, saved_at: new Date().toISOString() }];
+          return { ...p, updated_at: new Date().toISOString(), sections: updatedSections };
+        })
       );
     },
     [user]

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 import Input, { GetLocationButton } from "../components/ui/Input";
 import Select from "../components/ui/Select";
 import Card from "../components/ui/Card";
@@ -420,13 +422,16 @@ const TripPlanner = () => {
   // UI state
   const [loading, setLoading] = useState(false);
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
-  const [plan, setPlan] = useState<TripPlan | null>(() => { try { const saved = sessionStorage.getItem("yatrasathi_trip_plan"); return saved ? JSON.parse(saved) : null; } catch { return null; } });
+  const [plan, setPlan] = useState<TripPlan | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [apiError, setApiError] = useState<string | null>(null);
   const [openDays, setOpenDays] = useState<Set<number>>(new Set([1]));
   const [copied, setCopied] = useState(false);
 
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  // Warn before refresh/close when results are present
+  useUnsavedWarning(plan !== null);
 
   // Rotate loading messages
   useEffect(() => {
@@ -504,7 +509,6 @@ const TripPlanner = () => {
         specialRequirements: specialReqs.trim() || undefined,
       });
       setPlan(result);
-      sessionStorage.setItem("yatrasathi_trip_plan", JSON.stringify(result));
       setOpenDays(new Set([1]));
     } catch (err) {
       setApiError(err instanceof Error ? err.message : "Failed to generate trip plan. Please try again.");
@@ -538,7 +542,6 @@ ${window.location.href}`);
 
   const handleGenerateAgain = () => {
     setPlan(null);
-    sessionStorage.removeItem("yatrasathi_trip_plan");
     setApiError(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -844,6 +847,7 @@ ${window.location.href}`);
               transition={{ duration: 0.5 }}
               style={{ scrollMarginTop: "100px" }}
             >
+              <SaveReminderBanner />
               {/* Trip Title */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

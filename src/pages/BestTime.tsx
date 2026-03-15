@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { SunIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 import PageWrapper from "../components/layout/PageWrapper";
 import GradientText from "../components/ui/GradientText";
 import Card from "../components/ui/Card";
@@ -23,8 +25,10 @@ const SEASON_COLORS: Record<string, string> = {
 const BestTime = () => {
   const [destination, setDestination] = useState("");
   const [loading, setLoading] = useState(false);
-  const [seasons, setSeasons] = useState<BestTimeInfo[]>(() => { try { const s = sessionStorage.getItem('ys_besttime'); return s ? JSON.parse(s) : []; } catch { return []; } });
+  const [seasons, setSeasons] = useState<BestTimeInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  useUnsavedWarning(seasons.length > 0);
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -33,7 +37,7 @@ const BestTime = () => {
     setSeasons([]);
     try {
       const result = await generateBestTimeInfo(destination);
-      setSeasons(result); sessionStorage.setItem('ys_besttime', JSON.stringify(result));
+      setSeasons(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch best time info.");
     } finally {
@@ -75,6 +79,7 @@ const BestTime = () => {
 
       {seasons.length > 0 && !loading && (
         <>
+          <SaveReminderBanner />
           <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
             <SaveToPlanButton aiOutput={seasons} sectionType="best-time" />
           </div>

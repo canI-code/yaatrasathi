@@ -399,20 +399,86 @@ Return a JSON array of only the options that truly exist:
 
 // ─── Safety Guide ─────────────────────────────────────────────────────────────
 
-export const generateSafetyGuide = async (destination: string): Promise<SafetyTip[]> => {
-  const prompt = `Provide safety tips for travelers visiting ${destination}. Cover categories: General, Health, Transport, Scams, Emergency, Women Safety.
+export interface SafetyGuideInput {
+  destination: string;
+  travelerType: string;
+  concerns: string[];
+}
 
-Return JSON array:
-[
-  {
-    "category": "string",
-    "tips": ["string"],
-    "emergency": "string (optional emergency number or info)"
-  }
-]`;
+export const generateSafetyGuide = async (input: SafetyGuideInput): Promise<import("../types").SafetyReport> => {
+  const { destination, travelerType, concerns } = input;
+  const concernsList = concerns.length > 0 ? concerns.join(", ") : "all safety aspects";
+
+  const prompt = `You are an expert Indian travel safety analyst with deep local knowledge. Generate a comprehensive, location-specific safety report for ${destination} for a ${travelerType} traveler. Focus on: ${concernsList}.
+
+Be SPECIFIC to ${destination} — mention real local landmarks, actual hospitals, real police stations, actual scams that happen there, real area names. Do NOT give generic advice that applies to any city.
+
+Return a single JSON object with this EXACT structure:
+{
+  "destination": "${destination}",
+  "travelerType": "${travelerType}",
+  "overallScore": <number 1-10>,
+  "overallLevel": "safe|moderate|high|avoid",
+  "summary": "2-3 sentence specific summary about safety in ${destination} for ${travelerType}",
+  "aspects": [
+    {
+      "name": "General Safety",
+      "level": "safe|moderate|high|avoid",
+      "situation": "Specific situation in ${destination}",
+      "tips": ["specific tip 1", "specific tip 2", "specific tip 3"]
+    },
+    { "name": "Night Safety", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Women's Safety", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Theft & Scams", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Health & Medical", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Road Safety", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Natural Disasters", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Cyber Safety", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Political Stability", "level": "...", "situation": "...", "tips": ["..."] },
+    { "name": "Water & Swimming", "level": "...", "situation": "...", "tips": ["..."] }
+  ],
+  "scams": [
+    {
+      "title": "Scam name specific to ${destination}",
+      "howItWorks": "How this scam operates locally",
+      "redFlags": "Warning signs",
+      "howToAvoid": "Specific avoidance strategy"
+    }
+  ],
+  "emergencyContacts": [
+    { "service": "Police", "number": "100" },
+    { "service": "Ambulance", "number": "108" },
+    { "service": "Fire Brigade", "number": "101" },
+    { "service": "Women's Helpline", "number": "1091" },
+    { "service": "National Emergency", "number": "112" },
+    { "service": "Tourist Helpline", "number": "1800-11-1363" },
+    { "service": "Cyber Crime", "number": "1930" },
+    { "service": "Nearest Government Hospital", "number": "<actual hospital name and number for ${destination}>" },
+    { "service": "Nearest Private Hospital", "number": "<actual hospital name for ${destination}>" },
+    { "service": "Local Police Station", "number": "<actual local number for ${destination}>" }
+  ],
+  "areaGuide": [
+    {
+      "area": "<real area/locality name in ${destination}>",
+      "rating": "safe|moderate|high|avoid",
+      "bestTime": "Day only / Day and night / Avoid at night",
+      "notes": "Specific note about this area"
+    }
+  ],
+  "nightSafety": {
+    "safeAreas": ["<real area names safe at night in ${destination}>"],
+    "avoidAreas": ["<real area names to avoid at night>"],
+    "transportTips": ["specific night transport tip for ${destination}"],
+    "cautionAfter": "e.g. Extra caution after 10 PM"
+  },
+  "travelerSpecificTips": ["tip specific to ${travelerType} in ${destination}"],
+  "dos": ["specific do for ${destination}"],
+  "donts": ["specific dont for ${destination}"],
+  "finalVerdict": "2-3 sentence final verdict specific to ${destination} for ${travelerType}"
+}`;
 
   const raw = await fetchWithRetry(prompt);
-  return parseJSON<SafetyTip[]>(raw);
+  return parseJSON<import("../types").SafetyReport>(raw);
 };
 
 // ─── Best Time ────────────────────────────────────────────────────────────────
@@ -454,17 +520,18 @@ export const generatePlanAnalysis = async (
       {
         role: "system",
         content:
-          "You are YatraSathi, an expert AI travel analyst. Respond in clear, well-structured prose. Do not use JSON.",
+          "You are YatraSathi, an expert AI travel analyst. Always respond with valid JSON only. No markdown, no explanation outside JSON.",
       },
       { role: "user", content: prompt },
     ],
-    temperature: 0.7,
+    temperature: 0.4,
     max_tokens: 2048,
   });
 
-  const content = response.choices[0]?.message?.content;
-  if (!content) throw new Error("Empty response from Groq API.");
-  return content.trim();
+  const raw = response.choices[0]?.message?.content;
+  if (!raw) throw new Error("Empty response from Groq API.");
+  // Return raw — panel will parse it
+  return raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
 };
 
 // ─── Plan Chat ────────────────────────────────────────────────────────────────
@@ -517,4 +584,43 @@ export const generatePlanRecommendation = async (
 
   const raw = await fetchWithRetry(prompt);
   return parseJSON<RankedPlanResult[]>(raw);
+};
+
+// ─── General Chat ─────────────────────────────────────────────────────────────
+
+const GENERAL_CHAT_SYSTEM = `You are YatraSathi, an expert AI travel assistant and general knowledge companion. You have deep knowledge of:
+- Indian and international travel destinations, landmarks, distances, transport
+- Hotels, food, culture, safety, weather, visa requirements
+- General knowledge questions users may have while planning trips
+
+RESPONSE FORMAT RULES — always structure your response using these markers so the UI can render it beautifully:
+- For plain text paragraphs: just write normally
+- For a list of items: start each item with "- " on its own line
+- For a data card (key-value info): use "**Key:** Value" format, one per line
+- For a warning or important note: start the line with "⚠️ "
+- For a tip: start the line with "💡 "
+- For a section heading: start the line with "## Heading"
+- Keep responses concise and scannable — avoid long paragraphs
+- Never use markdown code blocks`;
+
+export const sendGeneralChatMessage = async (
+  history: ChatMessage[],
+  userMessage: string
+): Promise<string> => {
+  const client = getClient();
+
+  const response = await client.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      { role: "system", content: GENERAL_CHAT_SYSTEM },
+      ...history,
+      { role: "user", content: userMessage },
+    ],
+    temperature: 0.7,
+    max_tokens: 1024,
+  });
+
+  const content = response.choices[0]?.message?.content;
+  if (!content) throw new Error("Empty response from Groq API.");
+  return content.trim();
 };

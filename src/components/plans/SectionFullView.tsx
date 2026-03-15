@@ -269,10 +269,76 @@ function TransportView({ data }: { data: TransportOption[] }) {
   );
 }
 
-function SafetyView({ data }: { data: SafetyTip[] }) {
+function SafetyView({ data }: { data: SafetyTip[] | import("../../types").SafetyReport }) {
+  // Handle new SafetyReport format
+  if (!Array.isArray(data)) {
+    const report = data as import("../../types").SafetyReport;
+    const LEVEL_COLORS: Record<string, string> = {
+      safe: "#059669", moderate: "#d97706", high: "#dc2626", avoid: "#7c3aed",
+    };
+    const LEVEL_LABELS: Record<string, string> = {
+      safe: "Safe", moderate: "Moderate Caution", high: "High Caution", avoid: "Avoid",
+    };
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {/* Overall score */}
+        <div style={{ padding: "14px 16px", background: `rgba(${report.overallLevel === "safe" ? "5,150,105" : report.overallLevel === "moderate" ? "217,119,6" : "220,38,38"},0.06)`, borderRadius: 14, border: `1px solid rgba(${report.overallLevel === "safe" ? "5,150,105" : "220,38,38"},0.15)` }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+            <p style={{ margin: 0, fontSize: "0.9rem", fontWeight: 700, color: colors.textMain }}>{report.destination} — {report.travelerType}</p>
+            <span style={{ fontSize: "1.2rem", fontWeight: 900, color: LEVEL_COLORS[report.overallLevel] ?? "#d97706" }}>{report.overallScore}/10</span>
+          </div>
+          <p style={{ margin: 0, fontSize: "0.82rem", color: colors.textBody, lineHeight: 1.6 }}>{report.summary}</p>
+        </div>
+
+        {/* Aspects */}
+        {report.aspects?.length > 0 && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
+            {report.aspects.map((a, i) => {
+              const c = LEVEL_COLORS[a.level] ?? "#d97706";
+              return (
+                <Card key={i} style={{ borderLeft: `3px solid ${c}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                    <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: 700, color: colors.textMain }}>{a.name}</h4>
+                    <span style={{ fontSize: "0.68rem", fontWeight: 700, color: c, background: `${c}18`, padding: "2px 8px", borderRadius: 999 }}>{LEVEL_LABELS[a.level] ?? a.level}</span>
+                  </div>
+                  <p style={{ margin: "0 0 8px", fontSize: "0.78rem", color: colors.textBody, lineHeight: 1.5 }}>{a.situation}</p>
+                  {a.tips?.map((t, j) => <p key={j} style={{ margin: "0 0 4px", fontSize: "0.75rem", color: colors.textMuted }}>• {t}</p>)}
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Emergency contacts */}
+        {report.emergencyContacts?.length > 0 && (
+          <div>
+            <p style={{ margin: "0 0 8px", fontSize: "0.78rem", fontWeight: 700, color: colors.textMain }}>Emergency Contacts</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 8 }}>
+              {report.emergencyContacts.map((c, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "7px 12px", background: "rgba(220,38,38,0.04)", borderRadius: 10, border: "1px solid rgba(220,38,38,0.1)" }}>
+                  <span style={{ fontSize: "0.78rem", color: colors.textBody }}>{c.service}</span>
+                  <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#dc2626" }}>{c.number}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Final verdict */}
+        {report.finalVerdict && (
+          <div style={{ padding: "12px 16px", background: "rgba(42,157,143,0.06)", borderRadius: 12, border: "1px solid rgba(42,157,143,0.15)" }}>
+            <p style={{ margin: "0 0 4px", fontSize: "0.72rem", fontWeight: 700, color: colors.accentStrong, textTransform: "uppercase" }}>Final Verdict</p>
+            <p style={{ margin: 0, fontSize: "0.85rem", color: colors.textBody, lineHeight: 1.6 }}>{report.finalVerdict}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Handle old SafetyTip[] format
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-      {data.map((tip, i) => (
+      {(data as SafetyTip[]).map((tip, i) => (
         <Card key={i} style={{ height: "100%", borderLeft: `3px solid ${colors.accentStrong}` }}>
           <h3 style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: 10, color: colors.textMain }}>{tip.category}</h3>
           <ul style={{ paddingLeft: 0, listStyle: "none", margin: 0 }}>
@@ -368,7 +434,7 @@ export default function SectionFullView({ type, data }: SectionFullViewProps) {
     case "hotels":    return <HotelsView    data={data as Hotel[]} />;
     case "food":      return <FoodView      data={data as FoodItem[]} />;
     case "transport": return <TransportView data={data as TransportOption[]} />;
-    case "safety":    return <SafetyView    data={data as SafetyTip[]} />;
+    case "safety":    return <SafetyView    data={data as SafetyTip[] | import("../../types").SafetyReport} />;
     case "best-time": return <BestTimeView  data={data as BestTimeInfo[]} />;
     case "weather":   return <WeatherView   data={data as WeatherData} />;
     default:          return null;

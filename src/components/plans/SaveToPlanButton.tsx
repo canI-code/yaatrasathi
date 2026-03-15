@@ -32,14 +32,23 @@ export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanBu
     if (open && plans.length === 0) fetchPlans();
   }, [open, plans.length, fetchPlans]);
 
-  // Reposition dropdown whenever it opens
+  // Reposition dropdown whenever it opens — clamp to viewport
   useLayoutEffect(() => {
     if (!open || !triggerRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
+    const dropW = 260;
+    const viewW = window.innerWidth;
+    const margin = 12;
+
+    // Prefer aligning to the right edge of the trigger; fall back to left if it overflows
+    let left = rect.right + window.scrollX - dropW;
+    if (left < margin) left = margin;
+    if (left + dropW > viewW - margin) left = viewW - dropW - margin;
+
     setDropdownPos({
       top: rect.bottom + window.scrollY + 8,
-      left: rect.left + window.scrollX,
-      width: Math.max(rect.width, 240),
+      left,
+      width: dropW,
     });
   }, [open]);
 
@@ -130,6 +139,7 @@ export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanBu
                 position: "absolute",
                 top: dropdownPos.top,
                 left: dropdownPos.left,
+                width: dropdownPos.width,
                 minWidth: dropdownPos.width,
                 backgroundColor: "rgba(255,255,255,0.98)",
                 backdropFilter: "blur(20px)",
@@ -153,26 +163,44 @@ export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanBu
                   No plans yet. Create one from the dashboard.
                 </p>
               ) : (
-                <select
-                  value={selectedPlanId}
-                  onChange={(e) => setSelectedPlanId(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "8px 10px",
-                    borderRadius: 10,
-                    border: `1px solid rgba(0,0,0,0.08)`,
-                    background: "rgba(255,255,255,0.8)",
-                    fontSize: "0.85rem",
-                    fontFamily: "Inter, sans-serif",
-                    color: colors.textMain,
-                    outline: "none",
-                  }}
-                >
-                  <option value="">— Choose plan —</option>
-                  {plans.map((p) => (
-                    <option key={p.id} value={p.id}>{p.name}</option>
-                  ))}
-                </select>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, maxHeight: 200, overflowY: "auto", scrollbarWidth: "thin", scrollbarColor: "rgba(42,157,143,0.2) transparent" }}>
+                  {plans.map((p) => {
+                    const isSelected = selectedPlanId === p.id;
+                    const sectionCount = p.sections?.length ?? 0;
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => setSelectedPlanId(p.id)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 10,
+                          padding: "9px 12px",
+                          borderRadius: 10,
+                          border: `1px solid ${isSelected ? "rgba(42,157,143,0.4)" : "rgba(0,0,0,0.06)"}`,
+                          background: isSelected ? "rgba(42,157,143,0.08)" : "rgba(248,250,252,0.8)",
+                          cursor: "pointer",
+                          textAlign: "left",
+                          fontFamily: "Inter, sans-serif",
+                          transition: "all 0.12s",
+                        }}
+                      >
+                        <div style={{ minWidth: 0 }}>
+                          <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600, color: isSelected ? colors.accentStrong : colors.textMain, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {p.name}
+                          </p>
+                          <p style={{ margin: 0, fontSize: "0.7rem", color: colors.textSubtle }}>
+                            {sectionCount} section{sectionCount !== 1 ? "s" : ""}
+                          </p>
+                        </div>
+                        {isSelected && (
+                          <CheckIcon style={{ width: 14, height: 14, color: colors.accentStrong, flexShrink: 0 }} />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               )}
 
               {error && (

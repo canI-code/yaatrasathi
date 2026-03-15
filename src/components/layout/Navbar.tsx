@@ -18,6 +18,7 @@ const NAV_LINKS: NavLink[] = [
   { label: "Time", path: "/best-time" },
   { label: "Weather", path: "/weather" },
   { label: "Map", path: "/map" },
+  { label: "Pricing", path: "/pricing" },
 ];
 
 const Navbar = () => {

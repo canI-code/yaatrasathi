@@ -12,6 +12,8 @@ import { generateHotelRecommendations } from "../lib/groq";
 import type { Hotel } from "../types";
 import { colors } from "../theme";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 
 const STAR_OPTIONS = [
   { label: "Any Stars", value: "any" },
@@ -27,6 +29,8 @@ const Hotels = () => {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useUnsavedWarning(hotels.length > 0);
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -87,6 +91,7 @@ const Hotels = () => {
 
       {hotels.length > 0 && !loading && (
         <>
+          <SaveReminderBanner />
           {/* Top-right: save all hotels with info tooltip */}
           <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 8, marginBottom: 16 }}>
             {/* Info icon with tooltip */}

@@ -11,6 +11,8 @@ import { generateTransportOptions } from "../lib/groq";
 import type { TransportOption } from "../types";
 import { colors } from "../theme";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
+import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
+import SaveReminderBanner from "../components/shared/SaveReminderBanner";
 
 const TYPE_EMOJI: Record<string, string> = {
   flight: "✈️",
@@ -29,6 +31,8 @@ const TravelOptions = () => {
   const [options, setOptions] = useState<TransportOption[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useUnsavedWarning(options.length > 0);
 
   const handleSearch = async () => {
     if (!from.trim() || !to.trim()) { setError("Please enter both origin and destination."); return; }
@@ -87,6 +91,7 @@ const TravelOptions = () => {
 
       {options.length > 0 && !loading && (
         <>
+          <SaveReminderBanner />
           {/* Save all with info tooltip */}
           <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 8, marginBottom: 16 }}>
             <div style={{ position: "relative" }}>

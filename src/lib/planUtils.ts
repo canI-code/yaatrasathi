@@ -57,23 +57,45 @@ export function buildAnalysisPrompt(
     .join('\n\n');
 
   const priorContext = previousAnalysis
-    ? `\n\n## Previous Analysis (use as additional context)\n${previousAnalysis}`
+    ? `\n\n## Previous Analysis JSON (use as additional context, do not repeat)\n${previousAnalysis}`
     : '';
 
-  return `You are YatraSathi, an expert AI travel analyst. Analyse the following travel plan sections and provide a comprehensive, intelligent overview of the trip.${priorContext}
+  return `You are YatraSathi, an expert AI travel analyst. Analyse the following travel plan sections and return a structured JSON analysis.${priorContext}
 
 ## Plan Sections
 ${sectionSummaries}
 
-Provide a detailed analysis covering:
-- Overall trip summary and highlights
-- Budget assessment and recommendations
-- Accommodation and food insights
-- Safety considerations
-- Best timing and weather notes
-- Personalised travel tips
-
-Write in a friendly, informative tone suitable for a traveller.`;
+Return ONLY a valid JSON object with this EXACT structure (no markdown, no prose outside JSON):
+{
+  "tripSummary": {
+    "from": "source city or unknown",
+    "to": "destination city or unknown",
+    "days": <number or null>,
+    "travelers": <number or null>,
+    "style": "travel style or unknown",
+    "totalCost": <number or null>,
+    "currency": "INR"
+  },
+  "budgetBreakdown": [
+    { "category": "string", "amount": <number>, "percentage": <number> }
+  ],
+  "budgetWarnings": ["warning string if any"],
+  "budgetTips": ["tip 1", "tip 2"],
+  "accommodation": {
+    "name": "hotel name or null",
+    "location": "area or null",
+    "pricePerNight": <number or null>,
+    "notes": "brief note"
+  },
+  "topFoods": ["dish 1", "dish 2", "dish 3"],
+  "safetyLevel": "safe|moderate|high",
+  "safetyWarnings": ["warning if any"],
+  "safetyTips": ["tip 1", "tip 2"],
+  "bestTimeToVisit": "e.g. October to February",
+  "weatherNotes": ["note 1", "note 2"],
+  "topTips": ["tip 1", "tip 2", "tip 3"],
+  "highlights": ["highlight 1", "highlight 2", "highlight 3"]
+}`;
 }
 
 /**
@@ -121,15 +143,35 @@ Return a JSON array with this structure:
  */
 export function buildChatSystemPrompt(sections: PlanSection[]): string {
   if (sections.length === 0) {
-    return `You are YatraSathi, an expert AI travel assistant. The user has not saved any plan sections yet. Answer general travel questions helpfully and encourage them to save plan data for more personalised responses.`;
+    return `You are YatraSathi, an expert AI travel assistant with deep knowledge of Indian and international destinations. Answer general travel questions helpfully and encourage the user to save plan data for more personalised responses.`;
   }
+
+  // Extract destination info from planner section if available
+  const plannerSection = sections.find((s) => s.section_type === 'planner');
+  const planner = plannerSection?.data as Record<string, unknown> | undefined;
+  const destination = (planner?.destination as string) ?? null;
+  const source = (planner?.source as string) ?? null;
 
   const sectionContext = sections
     .map((s) => `### ${s.section_type}\n${JSON.stringify(s.data, null, 2)}`)
     .join('\n\n');
 
-  return `You are YatraSathi, an expert AI travel assistant. You are helping a user with their specific travel plan. Answer questions based on the plan data below. Be specific, helpful, and reference the plan details when relevant.
+  const destinationLine = destination
+    ? `The user is planning a trip to ${destination}${source ? ` from ${source}` : ''}.`
+    : '';
 
-## Plan Data
+  return `You are YatraSathi, an expert AI travel assistant with deep, up-to-date knowledge of Indian and international destinations, landmarks, distances, transport, food, culture, and local tips.
+
+${destinationLine}
+
+IMPORTANT RULES:
+- Answer ALL questions about the destination city/state using your own knowledge — distances between landmarks, local attractions, transport options, food, culture, safety, weather, etc.
+- Never say you don't know about a place unless it genuinely does not exist. Bharat Mandapam, for example, is a real convention centre in New Delhi near Pragati Maidan.
+- When asked about distances, give approximate real-world distances and travel times.
+- Reference the user's saved plan data when relevant, but also draw on your general knowledge freely.
+- Be concise and direct — no filler phrases like "Great question!" or "I'm excited to help".
+- If the user asks something completely unrelated to travel or to the destination in their plan (e.g. distances between cities not in their plan, general knowledge questions unrelated to travel), politely say: "That's outside the scope of this plan. For general questions, use the YatraSathi General Chat (the chat icon on the right side of the screen)."
+
+## User's Saved Plan Data
 ${sectionContext}`;
 }
