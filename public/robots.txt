@@ -17,4 +17,4 @@ Disallow: /profile
 Disallow: /login
 Disallow: /signup
 
-Sitemap: https://yatrasathi.in/sitemap.xml
+Sitemap: https://yaatrasathi-7sl.pages.dev/sitemap.xml
