@@ -1,1 +1,0 @@
-# YatraSathi utils package
