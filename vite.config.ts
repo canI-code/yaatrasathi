@@ -12,8 +12,4 @@ export default defineConfig({
   optimizeDeps: {
     include: ["mapbox-gl"],
   },
-  test: {
-    environment: "node",
-    include: ["src/**/*.test.ts"],
-  },
 });

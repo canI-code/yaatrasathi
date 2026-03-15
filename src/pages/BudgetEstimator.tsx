@@ -565,8 +565,6 @@ const BudgetEstimator = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-    </div>
     
       {/* CSS */ }
   <style>{`
