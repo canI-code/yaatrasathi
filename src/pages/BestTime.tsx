@@ -3,6 +3,8 @@ import { SunIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 import PageWrapper from "../components/layout/PageWrapper";
 import GradientText from "../components/ui/GradientText";
 import Card from "../components/ui/Card";
@@ -29,6 +31,7 @@ const BestTime = () => {
   const [error, setError] = useState<string | null>(null);
 
   useUnsavedWarning(seasons.length > 0);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -36,8 +39,8 @@ const BestTime = () => {
     setLoading(true);
     setSeasons([]);
     try {
-      const result = await generateBestTimeInfo(destination);
-      setSeasons(result);
+      const result = await withQuota(() => generateBestTimeInfo(destination));
+      if (result) setSeasons(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch best time info.");
     } finally {
@@ -52,6 +55,7 @@ const BestTime = () => {
 
   return (
     <PageWrapper>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
       <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Best Time</GradientText> to Visit
       </h1>

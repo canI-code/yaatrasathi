@@ -199,6 +199,29 @@ export default function NavbarUserMenu({ onCreatePlan }: NavbarUserMenuProps) {
                 My Plans
               </Link>
 
+              {/* Profile link */}
+              <Link
+                to="/profile"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "block",
+                  padding: "10px 16px",
+                  fontSize: "0.85rem",
+                  fontWeight: 500,
+                  color: colors.textMain,
+                  textDecoration: "none",
+                  transition: "background-color 0.15s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "rgba(42,157,143,0.06)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                Profile & Settings
+              </Link>
+
               {/* Sign out */}
               <button
                 onClick={handleSignOut}

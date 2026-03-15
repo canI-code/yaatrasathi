@@ -18,6 +18,8 @@ import type { WeatherData, WeatherForecast, WeatherAnalysis } from "../types";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 
 // ─── Weather condition → solid accent / glow ───────────────────────────────
 
@@ -252,6 +254,7 @@ const Weather = () => {
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useUnsavedWarning(weather !== null);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   const theme = weather ? getTheme(weather.icon) : null;
 
@@ -281,8 +284,8 @@ const Weather = () => {
     setAnalysisLoading(true);
     setAnalysisError(null);
     try {
-      const result = await generateWeatherAnalysis(weather, forecast);
-      setAnalysis(result);
+      const result = await withQuota(() => generateWeatherAnalysis(weather, forecast));
+      if (result) setAnalysis(result);
     } catch (err) {
       setAnalysisError(err instanceof Error ? err.message : "AI analysis failed. Please try again.");
     } finally {
@@ -303,6 +306,7 @@ const Weather = () => {
 
   return (
     <PageWrapper>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 16px 80px" }}>
 
         {/* ── Page Header ─────────────────────────────────────────────────── */}

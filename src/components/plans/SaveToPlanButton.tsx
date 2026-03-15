@@ -4,6 +4,9 @@ import { BookmarkIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePlans, extractTripLocations } from "../../contexts/PlansContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useSubscription } from "../../contexts/SubscriptionContext";
+import { UPGRADE_MESSAGES } from "../../lib/planLimits";
+import UpgradeModal from "../paywall/UpgradeModal";
 import type { SectionType, TripPlan } from "../../types";
 import { colors } from "../../theme";
 
@@ -14,7 +17,11 @@ interface SaveToPlanButtonProps {
 
 export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanButtonProps) {
   const { session } = useAuth();
+  const { canUse } = useSubscription();
   const { plans, fetchPlans, saveSection, saveWeatherSnapshot } = usePlans();
+
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const upgradeMsg = UPGRADE_MESSAGES['canSaveSections'];
 
   const [open, setOpen] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState<string>("");
@@ -69,6 +76,23 @@ export default function SaveToPlanButton({ aiOutput, sectionType }: SaveToPlanBu
   }, [open]);
 
   if (!session || aiOutput == null) return null;
+
+  // Show upgrade prompt for free users
+  if (!canUse('canSaveSections')) {
+    return (
+      <>
+        <button
+          onClick={() => setUpgradeOpen(true)}
+          style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.1)", background: "rgba(0,0,0,0.04)", color: colors.textSubtle, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: "Inter, sans-serif" }}
+        >
+          <BookmarkIcon style={{ width: 14, height: 14 }} />
+          Save to Plan
+          <span style={{ fontSize: "0.68rem", background: "rgba(42,157,143,0.1)", color: colors.accentStrong, padding: "1px 7px", borderRadius: 999, fontWeight: 700 }}>Basic+</span>
+        </button>
+        <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
+      </>
+    );
+  }
 
   async function handleSave() {
     if (!selectedPlanId) return;

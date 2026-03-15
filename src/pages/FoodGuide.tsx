@@ -14,6 +14,8 @@ import { colors } from "../theme";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 
 const SPICE_COLORS: Record<string, string> = {
   mild: "#059669",
@@ -50,6 +52,7 @@ const FoodGuide = () => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useUnsavedWarning(foods.length > 0);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -57,8 +60,8 @@ const FoodGuide = () => {
     setLoading(true);
     setFoods([]);
     try {
-      const result = await generateFoodGuide({ destination: destination.trim(), foodType, budget });
-      setFoods(result);
+      const result = await withQuota(() => generateFoodGuide({ destination: destination.trim(), foodType, budget }));
+      if (result) setFoods(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch food guide.");
     } finally {
@@ -68,6 +71,7 @@ const FoodGuide = () => {
 
   return (
     <PageWrapper>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
       <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         Local <GradientText>Food Guide</GradientText>
       </h1>

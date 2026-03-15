@@ -4,6 +4,7 @@ import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
 import App from "./App";
 import { AuthProvider } from "./contexts/AuthContext";
 import { PlansProvider } from "./contexts/PlansContext";
+import { SubscriptionProvider } from "./contexts/SubscriptionContext";
 
 const system = createSystem(defaultConfig, {
   theme: {
@@ -60,9 +61,11 @@ createRoot(rootEl).render(
   <StrictMode>
     <ChakraProvider value={system}>
       <AuthProvider>
-        <PlansProvider>
-          <App />
-        </PlansProvider>
+        <SubscriptionProvider>
+          <PlansProvider>
+            <App />
+          </PlansProvider>
+        </SubscriptionProvider>
       </AuthProvider>
     </ChakraProvider>
   </StrictMode>

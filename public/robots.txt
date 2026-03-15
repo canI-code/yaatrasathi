@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Allow: /pricing
+Allow: /planner
+Allow: /budget
+Allow: /hotels
+Allow: /food
+Allow: /transport
+Allow: /safety
+Allow: /best-time
+Allow: /weather
+Allow: /map
+
+Disallow: /dashboard
+Disallow: /plans/
+Disallow: /profile
+Disallow: /login
+Disallow: /signup
+
+Sitemap: https://yatrasathi.in/sitemap.xml

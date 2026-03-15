@@ -2,6 +2,9 @@ import { useState } from "react";
 import { SparklesIcon, ExclamationTriangleIcon, InformationCircleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { generatePlanAnalysis } from "../../lib/groq";
 import { usePlans } from "../../contexts/PlansContext";
+import { useSubscription } from "../../contexts/SubscriptionContext";
+import { UPGRADE_MESSAGES } from "../../lib/planLimits";
+import UpgradeModal from "../paywall/UpgradeModal";
 import type { PlanSection, PlanAnalysis } from "../../types";
 import Button from "../ui/Button";
 import { colors, glass } from "../../theme";
@@ -243,9 +246,22 @@ function AnalysisView({ data }: { data: AnalysisData }) {
 
 export default function PlanAnalysisPanel({ planId, sections, latestAnalysis, onAnalysisSaved }: PlanAnalysisPanelProps) {
   const { saveAnalysis } = usePlans();
+  const { canUse } = useSubscription();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentAnalysis, setCurrentAnalysis] = useState<PlanAnalysis | undefined>(latestAnalysis);
+  const upgradeMsg = UPGRADE_MESSAGES['canUseAnalysis'];
+
+  if (!canUse('canUseAnalysis')) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ padding: "14px 16px", background: "rgba(42,157,143,0.04)", borderRadius: 12, border: "1px dashed rgba(42,157,143,0.2)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <p style={{ margin: 0, fontSize: "0.85rem", color: colors.textMuted }}>AI Plan Analysis requires Basic or Pro plan.</p>
+          <a href="/pricing" style={{ fontSize: "0.78rem", fontWeight: 700, color: colors.accentStrong, textDecoration: "none", background: "rgba(42,157,143,0.08)", padding: "4px 12px", borderRadius: 999 }}>Upgrade</a>
+        </div>
+      </div>
+    );
+  }
 
   if (sections.length === 0) {
     return (

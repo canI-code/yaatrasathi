@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 import Input, { GetLocationButton } from "../components/ui/Input";
 import Select from "../components/ui/Select";
 import Card from "../components/ui/Card";
@@ -432,6 +434,7 @@ const TripPlanner = () => {
 
   // Warn before refresh/close when results are present
   useUnsavedWarning(plan !== null);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   // Rotate loading messages
   useEffect(() => {
@@ -497,7 +500,7 @@ const TripPlanner = () => {
     setLoadingMsgIdx(0);
 
     try {
-      const result = await generateTripPlan({
+      const result = await withQuota(() => generateTripPlan({
         source: source.trim(),
         destination: destination.trim(),
         duration: days,
@@ -507,9 +510,11 @@ const TripPlanner = () => {
         interests,
         foodPreference: foodPref,
         specialRequirements: specialReqs.trim() || undefined,
-      });
-      setPlan(result);
-      setOpenDays(new Set([1]));
+      }));
+      if (result) {
+        setPlan(result);
+        setOpenDays(new Set([1]));
+      }
     } catch (err) {
       setApiError(err instanceof Error ? err.message : "Failed to generate trip plan. Please try again.");
     } finally {
@@ -550,6 +555,7 @@ ${window.location.href}`);
 
   return (
     <PageWrapper>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
       <div style={{ maxWidth: "960px", margin: "0 auto" }}>
 
         {/* ── Page Header ── */}

@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { sendGeneralChatMessage } from "../../lib/groq";
 import type { ChatMessage } from "../../lib/groq";
+import { useSubscription } from "../../contexts/SubscriptionContext";
 import { colors } from "../../theme";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -146,6 +147,7 @@ function renderMessageContent(content: string) {
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function GeneralChat() {
+  const { canUse, hasChatQuota, incrementChatUsage } = useSubscription();
   const [open, setOpen] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
   const [sessions, setSessions] = useState<ChatSession[]>(() => loadSessions());
@@ -203,6 +205,15 @@ export default function GeneralChat() {
   async function handleSend() {
     const msg = input.trim();
     if (!msg || loading || !activeSession) return;
+
+    // Check feature access and quota
+    if (!canUse('canUseGeneralChat') || !hasChatQuota()) {
+      setError(!canUse('canUseGeneralChat')
+        ? "General Chat requires Basic or Pro plan. Visit /pricing to upgrade."
+        : "Daily chat limit reached. Upgrade to Pro for unlimited messages.");
+      return;
+    }
+    await incrementChatUsage();
     setInput("");
     setError(null);
 

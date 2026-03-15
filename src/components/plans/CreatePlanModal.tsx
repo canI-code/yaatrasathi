@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePlans } from "../../contexts/PlansContext";
+import { useSubscription } from "../../contexts/SubscriptionContext";
+import { UPGRADE_MESSAGES } from "../../lib/planLimits";
+import UpgradeModal from "../paywall/UpgradeModal";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { colors } from "../../theme";
@@ -13,11 +16,14 @@ interface CreatePlanModalProps {
 }
 
 export default function CreatePlanModal({ open, onClose }: CreatePlanModalProps) {
-  const { createPlan } = usePlans();
+  const { createPlan, plans } = usePlans();
+  const { canCreatePlan } = useSubscription();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const upgradeMsg = UPGRADE_MESSAGES['maxPlans'];
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Focus input when modal opens
@@ -40,10 +46,14 @@ export default function CreatePlanModal({ open, onClose }: CreatePlanModalProps)
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!name.trim()) {
-      setError("Plan name cannot be empty.");
+    if (!name.trim()) { setError("Plan name cannot be empty."); return; }
+
+    // Check plan limit before attempting creation
+    if (!canCreatePlan(plans.length)) {
+      setUpgradeOpen(true);
       return;
     }
+
     setError(null);
     setLoading(true);
     const plan = await createPlan(name.trim());
@@ -57,7 +67,9 @@ export default function CreatePlanModal({ open, onClose }: CreatePlanModalProps)
   }
 
   return (
-    <AnimatePresence>
+    <>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
+      <AnimatePresence>
       {open && (
         <>
           {/* Backdrop */}
@@ -164,5 +176,6 @@ export default function CreatePlanModal({ open, onClose }: CreatePlanModalProps)
         </>
       )}
     </AnimatePresence>
+    </>
   );
 }

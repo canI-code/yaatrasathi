@@ -14,6 +14,8 @@ import { colors } from "../theme";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 
 const STAR_OPTIONS = [
   { label: "Any Stars", value: "any" },
@@ -31,6 +33,7 @@ const Hotels = () => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useUnsavedWarning(hotels.length > 0);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   const handleSearch = async () => {
     if (!destination.trim()) { setError("Please enter a destination."); return; }
@@ -38,8 +41,8 @@ const Hotels = () => {
     setLoading(true);
     setHotels([]);
     try {
-      const result = await generateHotelRecommendations({ destination, stars: stars === "any" ? undefined : parseInt(stars) });
-      setHotels(result);
+      const result = await withQuota(() => generateHotelRecommendations({ destination, stars: stars === "any" ? undefined : parseInt(stars) }));
+      if (result) setHotels(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch hotel recommendations.");
     } finally {
@@ -56,6 +59,7 @@ const Hotels = () => {
 
   return (
     <PageWrapper>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
       <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Hotels</GradientText> & Stays
       </h1>

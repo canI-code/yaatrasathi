@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { CheckIcon, XMarkIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import PageWrapper from "../components/layout/PageWrapper";
 import GradientText from "../components/ui/GradientText";
+import PaymentButton from "../components/paywall/PaymentButton";
 import { colors } from "../theme";
 
 const PLANS = [
@@ -122,9 +123,22 @@ export default function PricingPage() {
                   </>
                 )}
               </div>
-              <Link to={plan.ctaLink} style={{ textDecoration: "none", display: "block", marginBottom: 24 }}>
-                <button style={{ width: "100%", padding: "12px 0", borderRadius: 12, fontFamily: "Inter,sans-serif", fontSize: "0.9rem", fontWeight: 700, cursor: "pointer", transition: "all 0.2s", border: plan.ctaVariant === "filled" ? "none" : `2px solid ${plan.color}`, background: plan.ctaVariant === "filled" ? plan.color : "transparent", color: plan.ctaVariant === "filled" ? "#fff" : plan.color }}>{plan.cta}</button>
-              </Link>
+              <div style={{ marginBottom: 24 }}>
+                {plan.id === "free" ? (
+                  <Link to={plan.ctaLink} style={{ textDecoration: "none", display: "block" }}>
+                    <button style={{ width: "100%", padding: "12px 0", borderRadius: 12, fontFamily: "Inter,sans-serif", fontSize: "0.9rem", fontWeight: 700, cursor: "pointer", border: `2px solid ${plan.color}`, background: "transparent", color: plan.color }}>
+                      {plan.cta}
+                    </button>
+                  </Link>
+                ) : (
+                  <PaymentButton
+                    plan={plan.id as "basic" | "pro"}
+                    period={annual ? "annual" : "monthly"}
+                    label={plan.cta}
+                    highlight={plan.highlight}
+                  />
+                )}
+              </div>
               <div style={{ height: 1, background: "rgba(0,0,0,0.06)", marginBottom: 20 }} />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {plan.features.map((f, j) => (

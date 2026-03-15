@@ -9,6 +9,7 @@ import { supabase } from '../lib/supabase';
 import { trimVersions, isValidPlanName } from '../lib/planUtils';
 import { fetchWeather } from '../lib/weather';
 import { useAuth } from './AuthContext';
+import { PLAN_LIMITS } from '../lib/planLimits';
 import type {
   Plan,
   PlanSection,
@@ -108,6 +109,13 @@ export function PlansProvider({ children }: { children: ReactNode }) {
   const createPlan = useCallback(async (name: string): Promise<Plan | null> => {
     if (!user) return null;
     if (!isValidPlanName(name)) return null;
+
+    // Check plan limit — read tier from localStorage (set by SubscriptionContext)
+    const tier = (localStorage.getItem('ys_plan_tier') ?? 'free') as 'free' | 'basic' | 'pro';
+    const maxPlans = PLAN_LIMITS[tier].maxPlans;
+    if (maxPlans !== -1 && plans.length >= maxPlans) {
+      return null; // caller should show upgrade modal
+    }
 
     const { data, error } = await supabase
       .from('plans')

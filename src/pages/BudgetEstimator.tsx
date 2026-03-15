@@ -3,6 +3,8 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import Input, { GetLocationButton } from "../components/ui/Input";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 import Select from "../components/ui/Select";
 import Card from "../components/ui/Card";
 import {
@@ -190,6 +192,7 @@ const BudgetEstimator = () => {
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useUnsavedWarning(budget !== null);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   useEffect(() => {
     if (!loading) return;
@@ -215,7 +218,7 @@ const BudgetEstimator = () => {
     setBudget(null);
     setLoadingMsg(0);
     try {
-      const result = await generateBudgetEstimate({
+      const result = await withQuota(() => generateBudgetEstimate({
         source: source.trim() || "India",
         destination: destination.trim(),
         days,
@@ -224,9 +227,11 @@ const BudgetEstimator = () => {
         accommodation,
         transport,
         includeFlights,
-      });
-      setBudget(result);
-      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+      }));
+      if (result) {
+        setBudget(result);
+        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to generate budget. Please try again.");
     } finally {
@@ -264,7 +269,7 @@ const BudgetEstimator = () => {
 
   return (
     <PageWrapper>
-      <div style={{ maxWidth: "860px", margin: "0 auto", padding: "0 16px 80px" }}>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
 
         {/* Page Header */}
         <motion.div

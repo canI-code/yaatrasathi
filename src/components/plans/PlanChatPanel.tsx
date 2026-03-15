@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, FormEvent } from "react";
 import { PaperAirplaneIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { sendPlanChatMessage, type ChatMessage } from "../../lib/groq";
+import { useSubscription } from "../../contexts/SubscriptionContext";
+import { UPGRADE_MESSAGES } from "../../lib/planLimits";
 import type { PlanSection } from "../../types";
 import { colors, glass } from "../../theme";
 
@@ -10,6 +12,7 @@ interface PlanChatPanelProps {
 }
 
 export default function PlanChatPanel({ sections }: PlanChatPanelProps) {
+  const { canUse } = useSubscription();
   const [history, setHistory] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -41,6 +44,15 @@ export default function PlanChatPanel({ sections }: PlanChatPanelProps) {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!canUse('canUsePlanChat')) {
+    return (
+      <div style={{ padding: "14px 16px", background: "rgba(42,157,143,0.04)", borderRadius: 12, border: "1px dashed rgba(42,157,143,0.2)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <p style={{ margin: 0, fontSize: "0.85rem", color: colors.textMuted }}>Plan Chat requires Basic or Pro plan.</p>
+        <a href="/pricing" style={{ fontSize: "0.78rem", fontWeight: 700, color: colors.accentStrong, textDecoration: "none", background: "rgba(42,157,143,0.08)", padding: "4px 12px", borderRadius: 999 }}>Upgrade</a>
+      </div>
+    );
   }
 
   return (

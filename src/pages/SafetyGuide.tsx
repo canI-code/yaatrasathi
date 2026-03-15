@@ -14,6 +14,8 @@ import { colors } from "../theme";
 import SaveToPlanButton from "../components/plans/SaveToPlanButton";
 import { useUnsavedWarning } from "../hooks/useUnsavedWarning";
 import SaveReminderBanner from "../components/shared/SaveReminderBanner";
+import { useAIQuota } from "../hooks/useAIQuota";
+import UpgradeModal from "../components/paywall/UpgradeModal";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -90,6 +92,7 @@ const SafetyGuide = () => {
   const [error, setError] = useState<string | null>(null);
 
   useUnsavedWarning(report !== null);
+  const { withQuota, upgradeOpen, setUpgradeOpen, upgradeMsg } = useAIQuota();
 
   function toggleConcern(val: string) {
     setSelectedConcerns((prev) =>
@@ -103,12 +106,12 @@ const SafetyGuide = () => {
     setLoading(true);
     setReport(null);
     try {
-      const result = await generateSafetyGuide({
+      const result = await withQuota(() => generateSafetyGuide({
         destination: destination.trim(),
         travelerType,
         concerns: selectedConcerns.length > 0 ? selectedConcerns : ["all safety aspects"],
-      });
-      setReport(result);
+      }));
+      if (result) setReport(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to generate safety report.");
     } finally {
@@ -118,6 +121,7 @@ const SafetyGuide = () => {
 
   return (
     <PageWrapper>
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} title={upgradeMsg.title} description={upgradeMsg.description} />
       <h1 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, marginBottom: "8px", textAlign: "center", color: colors.textMain }}>
         <GradientText>Safety</GradientText> Guide
       </h1>

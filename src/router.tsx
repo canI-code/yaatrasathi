@@ -30,6 +30,7 @@ const SignupPage = lazy(() => import("./pages/SignupPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const PlanDetailPage = lazy(() => import("./pages/PlanDetailPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 const RootLayout = () => {
   const location = useLocation();
@@ -80,6 +81,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "dashboard", element: <DashboardPage /> },
           { path: "plans/:planId", element: <PlanDetailPage /> },
+          { path: "profile", element: <ProfilePage /> },
         ],
       },
 
